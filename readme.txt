@@ -1,18 +1,18 @@
 === Plugin Name ===
 Contributors: christopherross
 Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
-Tags: wordpress,easy,popular,posts
+Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget
 Donate link: http://www.thisismyurl.com/
 Requires at least: 2.0.0
 Tested up to: 2.7.1
-Stable tag: 0.0.1
+Stable tag: 0.0.2
 
 
-An easy to use WordPress function to add popular posts to any theme.
+An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
 
 == Description ==
 
-An easy to use WordPress function to add popular posts to any theme.
+An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
 
 == Installation ==
 
@@ -29,23 +29,23 @@ Updates to the plugin will be posted here, to [thisismyurl](http://www.thisismyu
 
 Insert the following code into your WordPress theme files: 
 
-<strong>General results
-<span style="font-weight: normal;">Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.</span></strong>
+<strong>General results</strong>
+Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.
 
 &lt;?php popularPosts();?&gt;
 
-<strong>Specific number of results
-<span style="font-weight: normal;">If you would like to return a specific number of results as your maximum:</span> </strong>
+<strong>Specific number of results</strong>
+If you would like to return a specific number of results as your maximum:
 
 &lt;?php popularPosts('count=10');?&gt;
-<div><strong>Altering the before and after values</strong></div>
-<div>By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can specify how to format the results using the following code:</div>
-<div>
+
+<strong>Altering the before and after values</strong><
+By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can specify how to format the results using the following code:
 
 &lt;?php popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;');?&gt;
 
-<strong>Echo vs. Return
-</strong>Finally, if you'd like to copy the results into a variable you can return the results as follows:
+<strong>Echo vs. Return</strong>
+Finally, if you'd like to copy the results into a variable you can return the results as follows:
 
 &lt;?php popularPosts('echo=false');?&gt; 
 
