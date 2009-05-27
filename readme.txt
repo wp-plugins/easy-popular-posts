@@ -47,7 +47,7 @@ By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can
 <strong>Echo vs. Return</strong>
 Finally, if you'd like to copy the results into a variable you can return the results as follows:
 
-&lt;?php popularPosts('echo=false');?&gt; 
+&lt;?php popularPosts('show=false');?&gt; 
 
 
 = Is this plugin stable? = 
