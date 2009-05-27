@@ -5,7 +5,7 @@ Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Author URI: http://thisismyurl.com
-Version: 0.0.2
+Version: 0.1.0
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -24,6 +24,92 @@ Version: 0.0.2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
+
+
+
+
+add_action('admin_menu', 'EasyPopularPosts_menu');
+
+function EasyPopularPosts_menu() {
+  add_options_page('Easy Popular Posts', 'Easy Popular Posts', 10,'EasyPopularPosts.php', 'EasyPopularPosts_options');
+}
+
+function EasyPopularPosts_options() {
+
+?>
+<div class="wrap">
+    <div id="icon-options-general" class="icon32"><br /></div>
+    <h2>Easy Popular Posts Settings</h2>
+    
+    
+    
+    <div id="poststuff" class="metabox-holder">
+    <div class="inner-sidebar">
+    <div id="side-sortables" class="meta-box-sortabless ui-sortable" style="position:relative;">
+    
+    <div id="sm_pnres" class="postbox">
+    <h3 class="hndle"><span>About this Plugin:</span></h3>
+    <div class="inside">
+    <ul class='options'>
+    <style>.options a {text-decoration:none;}</style>
+    <li><a href="http://www.thisismyurl.com/free-downloads/easy-popular-posts/">Plugin Homepage</a></li>
+    <li><a href="http://wordpress.org/extend/plugins/easy-popular-posts/">Vote for this Plugin</a></li>
+    <li><a href="http://forums.thisismyurl.com/">Support Forum</a></li>
+    <li><a href="http://support.thisismyurl.com/">Report a Bug</a></li>
+    <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847">Donate with PayPal</a></li>
+    </ul>
+    </div>
+    </div>
+    
+    </div>
+    </div>
+    
+    <div class="has-sidebar sm-padded" >
+    
+    <div id="post-body-content" class="has-sidebar-content">
+    
+    <div class="meta-box-sortabless">
+    
+    <!-- Rebuild Area -->
+    <!-- Basic Options -->
+    <div id="sm_basic_options" class="postbox">
+    <h3 class="hndle"><span>Basic Options</span></h3>
+    <div class="inside">
+    <p class="hndle">This plugin has no Administation level settings. </p>
+    </div>
+    </div>
+    
+    <div id="sm_basic_options2" class="postbox">
+      <h3 class="hndle"><span>Read Me File Contents</span></h3>
+    <div class="inside">
+      <?php 
+	  $contents = file_get_contents('../wp-content/plugins/easy-popular-posts/readme.txt');
+	  $contents = str_replace("\n","<br>",$contents);
+	  echo $contents;
+	  ?>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+</div>
+<?php
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
