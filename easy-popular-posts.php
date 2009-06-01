@@ -5,7 +5,7 @@ Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Author URI: http://thisismyurl.com
-Version: 0.1.0
+Version: 0.1.1
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -119,6 +119,7 @@ function popularPosts($options='') {
 					"comments" => "0",
                     "before"  => "<li>",
                     "after" => "</li>",
+					"order" => "desc",
 					"show" => true
                    );
 
@@ -135,11 +136,16 @@ function popularPosts($options='') {
 	if ($options['comments']) {$ns_options['comments'] = $options['comments'];}
 	if ($options['before']) {$ns_options['before'] = $options['before'];}
 	if ($options['after']) {$ns_options['after'] = $options['after'];}
+	if ($options['order']) {$ns_options['order'] = $options['order'];}
 	if ($options['show']) {$ns_options['show'] = $options['show'];}
 	
-	
+	if(strtolower($ns_options['order']) == "desc") {$sqlorder = "ORDER BY comment_count DESC";}
+	if(strtolower($ns_options['order']) == "asc") {$sqlorder = "ORDER BY comment_count ASC";}
+	if(strtolower($ns_options['order']) == "rand") {$sqlorder = "ORDER BY RAND()";}
+
+
 	global $wpdb;  
-    $posts = $wpdb->get_results("SELECT comment_count, ID, post_title FROM $wpdb->posts WHERE post_type='post' AND post_status = 'publish' AND comment_count >= ".$ns_options['comments']." ORDER BY comment_count DESC LIMIT 0 , ".$ns_options['count']);  
+    $posts = $wpdb->get_results("SELECT comment_count, ID, post_title FROM $wpdb->posts WHERE post_type='post' AND post_status = 'publish' AND comment_count >= ".$ns_options['comments']." ".$sqlorder."  LIMIT 0 , ".$ns_options['count']);  
 
     foreach ($posts as $post) {  
         setup_postdata($post);  

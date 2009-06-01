@@ -5,7 +5,7 @@ Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, m
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847
 Requires at least: 2.0.0
 Tested up to: 2.7.1
-Stable tag: 0.1.0
+Stable tag: 0.1.1
 
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
@@ -44,6 +44,13 @@ By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can
 
 &lt;?php popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;');?&gt;
 
+
+<strong>The Order</strong><
+You can now change the order of the results using ASC, DESC or RAND to return the results in ascending, descending or random order.
+
+&lt;?php popularPosts('order=ASC;');?&gt;
+
+
 <strong>Echo vs. Return</strong>
 Finally, if you'd like to copy the results into a variable you can return the results as follows:
 
@@ -61,3 +68,4 @@ If you would like to donate to help support future development of this tool, ple
 == Change Log ==
 
 0.1.0 	- Added admin menus
+0.1.1 	- Added an ORDER option
