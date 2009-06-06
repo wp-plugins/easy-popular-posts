@@ -5,7 +5,7 @@ Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, m
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847
 Requires at least: 2.0.0
 Tested up to: 2.7.1
-Stable tag: 0.1.1
+Stable tag: 0.1.2
 
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
@@ -29,32 +29,38 @@ Updates to the plugin will be posted here, to [thisismyurl](http://www.thisismyu
 
 Insert the following code into your WordPress theme files: 
 
-<strong>General results</strong>
+=General results=
 Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.
 
-&lt;?php popularPosts();?&gt;
+ popularPosts();
 
-<strong>Specific number of results</strong>
+=Specific number of results=
 If you would like to return a specific number of results as your maximum:
 
-&lt;?php popularPosts('count=10');?&gt;
+ popularPosts('count=10');
 
-<strong>Altering the before and after values</strong><
+=Altering the before and after values=<
 By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can specify how to format the results using the following code:
 
-&lt;?php popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;');?&gt;
+ popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;');
 
 
-<strong>The Order</strong><
+=The Order=<
 You can now change the order of the results using ASC, DESC or RAND to return the results in ascending, descending or random order.
 
-&lt;?php popularPosts('order=ASC;');?&gt;
+ popularPosts('order=ASC');
 
 
-<strong>Echo vs. Return</strong>
+=Echo vs. Return=
 Finally, if you'd like to copy the results into a variable you can return the results as follows:
 
-&lt;?php popularPosts('show=false');?&gt; 
+ popularPosts('show=false'); 
+
+=Combining Arguements=
+
+If you'd like to call multiple arguments you can do so by separating them with a & symbol:
+
+ popularPosts('show=false&order=ASC'); 
 
 
 = Is this plugin stable? = 
@@ -69,3 +75,4 @@ If you would like to donate to help support future development of this tool, ple
 
 0.1.0 	- Added admin menus
 0.1.1 	- Added an ORDER option
+0.1.2	- Fixed the readme.txt file

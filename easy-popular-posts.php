@@ -5,7 +5,7 @@ Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Author URI: http://thisismyurl.com
-Version: 0.1.1
+Version: 0.1.2
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -120,6 +120,7 @@ function popularPosts($options='') {
                     "before"  => "<li>",
                     "after" => "</li>",
 					"order" => "desc",
+					"nofollow" => false,
 					"show" => true
                    );
 
@@ -137,6 +138,7 @@ function popularPosts($options='') {
 	if ($options['before']) {$ns_options['before'] = $options['before'];}
 	if ($options['after']) {$ns_options['after'] = $options['after'];}
 	if ($options['order']) {$ns_options['order'] = $options['order'];}
+	if ($options['nofollow']) {$ns_options['nofollow'] = $options['nofollow'];}
 	if ($options['show']) {$ns_options['show'] = $options['show'];}
 	
 	if(strtolower($ns_options['order']) == "desc") {$sqlorder = "ORDER BY comment_count DESC";}
@@ -153,7 +155,9 @@ function popularPosts($options='') {
         $title = $post->post_title;  
         $count = $post->comment_count;  
   
-        $popular .= $ns_options['before'].'<a href="' . get_permalink($id) . '" title="' . $title . '">' . $title . '</a>'.$ns_options['after'];  
+        $popular .= $ns_options['before'].'<a href="' . get_permalink($id) . '" title="' . $title . '"';
+		if ($ns_options['nofollow'] == true) $popular .= " rel='nofollow' ";
+		$popular .= '>' . $title . '</a>'.$ns_options['after'];  
     }  
 
 	if ($ns_options['show']==1) {echo $popular;} else {return $popular;}
