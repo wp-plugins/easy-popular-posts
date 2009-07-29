@@ -5,7 +5,7 @@ Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Author URI: http://thisismyurl.com
-Version: 1.0.1
+Version: 1.1.0
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -25,7 +25,7 @@ Version: 1.0.1
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
+include("common.php");
 
 
 add_action('admin_menu', 'EasyPopularPosts_menu');
@@ -36,107 +36,59 @@ function EasyPopularPosts_menu() {
 
 function EasyPopularPosts_options() {
 
-?>
-<div class="wrap">
-    <div id="icon-options-general" class="icon32"><br /></div>
-    <h2>Easy Popular Posts Settings</h2>
-    
-    
-    
-    <div id="poststuff" class="metabox-holder">
-    <div class="inner-sidebar">
-    <div id="side-sortables" class="meta-box-sortabless ui-sortable" style="position:relative;">
-    
-    <div id="sm_pnres" class="postbox">
-    <h3 class="hndle"><span>About this Plugin:</span></h3>
-    <div class="inside">
-    <ul class='options'>
-    <style>.options a {text-decoration:none;}</style>
-    <li><a href="http://www.thisismyurl.com/free-downloads/easy-popular-posts/">Plugin Homepage</a></li>
-    <li><a href="http://wordpress.org/extend/plugins/easy-popular-posts/">Vote for this Plugin</a></li>
-    <li><a href="http://forums.thisismyurl.com/">Support Forum</a></li>
-    <li><a href="http://support.thisismyurl.com/">Report a Bug</a></li>
-    <li><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847">Donate with PayPal</a></li>
-    </ul>
-    </div>
-    </div>
+
+	$title = "Easy Popular Posts";
+	$link = "easy-popular-posts";
+	$donate = "5725847";
 
 
-    <?php 
-	if (function_exists(zip_open)) {
-	$file = "easy-popular-posts";
-			$lastupdate = get_option($file."-update");
-		if (strlen($lastupdate )==0 || date("U")-$lastupdate > $lastupdate) {
-			$pluginUpdate = file_get_contents('http://downloads.wordpress.org/plugin/'.$file.'.zip');
-			$myFile = "../wp-content/uploads/cache-".$file.".zip";
-			$fh = fopen($myFile, 'w') or die("can't open file");
-			$stringData = $pluginUpdate;
-			fwrite($fh, $stringData);
-			fclose($fh);
-			
-			$zip = zip_open($myFile);
-			while ($zip_entry = zip_read($zip)) {
-				if (zip_entry_name($zip_entry) == $file."/".$file.".php") {$size = zip_entry_filesize($zip_entry);}
-			}
-			zip_close($zip);
-			unlink($myFile);
-			
-			if ($size != filesize("../wp-content/plugins/".$file."/".$file.".php")) {?>    
-			<div id="sm_pnres" class="postbox">
-				<h3 class="hndle"><span>Plugin Status</span></h3>
-				<div class="inside">
-				<ul class='options'>
-				<style>.options a {text-decoration:none;}</style>
-				<li>This plugin is out of date. <a href='http://downloads.wordpress.org/plugin/<?php echo $file;?>.zip'>Please <strong>download</strong> the latest version.</a></li>
-				</ul>
-				</div>
-				</div>
-	<?php
-		} 
-		update_option($file."-update", date('U'));
-    }}
-	?>
+	/* Page Start */
+	echo "<div class='wrap'><div id='icon-options-general' class='icon32'><br /></div><h2>$title Settings</h2>
+	
+  <form name='addlink' id='addlink' method='post' action='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=$donate'>
+    <div id='poststuff' class='metabox-holder has-right-sidebar'>
+      <div id='side-info-column' class='inner-sidebar'>
+        <div id='side-sortables' class='meta-box-sortables'>
+          <div id='linksubmitdiv' class='postbox ' >";
+		  
+		  
+		  // Donate box
+		  
+		 echo makedonation("Donate","If you find this plugin useful, please consider a small donation.");
 
 
+							
+		// add links box
+		echo smallbox("Links",makelinks($link));	
+		
+		// add update check
+		echo smallbox("Updates",updates($link));	
+	  
+		  
+		// scan website for news  
+		$news = file_get_contents("http://www.thisismyurl.com/software/".$link."/#".urlencode($_SERVER['HTTP_HOST']));		
+		preg_match ("/<div id='updates'>([^`]*?)<\/div>/", $news, $match);
+		$news = $match[1];
+		if ($news) {echo smallbox("Plugin News",$news);}  
+		
+		
+		
+	// end the sidebar
+	echo "</div></div>";
+		
+		
+	// start the main body
+	echo "<div id='post-body'><div id='post-body-content'>";
 
-    </div>
-    </div>
-    
-    <div class="has-sidebar sm-padded" >
-    
-    <div id="post-body-content" class="has-sidebar-content">
-    
-    <div class="meta-box-sortabless">
-    
-    <!-- Rebuild Area -->
-    <!-- Basic Options -->
-    <div id="sm_basic_options" class="postbox">
-    <h3 class="hndle"><span>Basic Options</span></h3>
-    <div class="inside">
-    <p class="hndle">This plugin has no Administation level settings. </p>
-    </div>
-    </div>
-    
-    <div id="sm_basic_options2" class="postbox">
-      <h3 class="hndle"><span>Read Me File Contents</span></h3>
-    <div class="inside">
-      <?php 
-	  $contents = file_get_contents('../wp-content/plugins/easy-popular-posts/readme.txt');
-	  $contents = str_replace("\n","<br>",$contents);
-	  echo $contents;
-	  ?>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-</div>
-<?php
+		$message = "This plugin has no administation level settings.";
+		echo bigbox("Administation",$message);
+
+		$readme = "<pre>".wordwrap(parse_urls(file_get_contents('../wp-content/plugins/'.$link.'/readme.txt'), 80, "\n",true))."</pre>";
+		echo bigbox("Readme.txt File Contents",$readme);
+	
+	// wrap the rest of the page.
+	echo "</div></div></div></form></div>";
 }
-
-
-
 
 
 

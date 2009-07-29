@@ -1,12 +1,12 @@
 === Plugin Name ===
 Contributors: christopherross
-Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
+Plugin URI: http://thisismyurl.com/software/easy-popular-posts
 Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
 
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847
 Requires at least: 2.0.0
 Tested up to: 2.8.0
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
@@ -15,6 +15,11 @@ An easy to use WordPress function to add popular posts to any theme. The results
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
 
+== Screenshots ==
+
+1. screenshot-1.png
+
+
 == Installation ==
 
 To install the plugin, please upload the folder to your plugins folder and active the plugin.
@@ -22,7 +27,8 @@ To install the plugin, please upload the folder to your plugins folder and activ
 == Screenshots ==
 
 == Updates ==
-Updates to the plugin will be posted here, to [thisismyurl](http://www.thisismyurl.com/plugins/easy-popular-posts)
+Updates to the plugin will be posted here, to [thisismyurl]
+(http://www.thisismyurl.com/software/easy-popular-posts)
 
 == Frequently Asked Questions ==
 
@@ -65,7 +71,8 @@ If you'd like to call multiple arguments you can do so by separating them with a
 
 
 == Donations ==
-If you would like to donate to help support future development of this tool, please visit [thisismyurl](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847)
+If you would like to donate to help support future development of this tool, please visit [thisismyurl]
+(https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847)
 
 
 == Change Log ==
@@ -74,3 +81,4 @@ If you would like to donate to help support future development of this tool, ple
 0.1.1 	- Added an ORDER option
 0.1.2	- Fixed the readme.txt file
 1.0.0	- Official Release
+1.1.0   - WP2.8 Compatibility Fixes
