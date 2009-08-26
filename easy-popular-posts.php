@@ -5,7 +5,7 @@ Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Author URI: http://thisismyurl.com
-Version: 1.1.0
+Version: 1.1.1
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -25,7 +25,7 @@ Version: 1.1.0
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-include("common.php");
+if (!function_exists(smallbox)) {include_once("common.php");}
 
 
 add_action('admin_menu', 'EasyPopularPosts_menu');
@@ -66,7 +66,7 @@ function EasyPopularPosts_options() {
 	  
 		  
 		// scan website for news  
-		$news = file_get_contents("http://www.thisismyurl.com/software/".$link."/#".urlencode($_SERVER['HTTP_HOST']));		
+		$news = file_get_contents("http://www.thisismyurl.com/download/wordpress-downloads/".$link."/#".urlencode($_SERVER['HTTP_HOST']));		
 		preg_match ("/<div id='updates'>([^`]*?)<\/div>/", $news, $match);
 		$news = $match[1];
 		if ($news) {echo smallbox("Plugin News",$news);}  

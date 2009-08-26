@@ -69,7 +69,7 @@ function smallbox($title,$content) {
           </div>";
 	}
 	function makelinks($link) {
-			$links = "<li><a href='http://www.thisismyurl.com/software/$link/'>Plugin Homepage</a></li>
+			$links = "<li><a href='http://www.thisismyurl.com/download/wordpress-downloads/$link/'>Plugin Homepage</a></li>
 			<li><a href='http://wordpress.org/extend/plugins/$link/'>Vote for this Plugin</a></li>
 			<li><a href='http://forums.thisismyurl.com/'>Support Forum</a></li>
 			<li><a href='http://support.thisismyurl.com/'>Report a Bug</a></li>";
