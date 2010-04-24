@@ -81,7 +81,7 @@ function smallbox($title,$content) {
 		if (function_exists(zip_open)) {
 			$lastupdate = get_option($link."-update");
 			if (strlen($lastupdate )==0 || date("U")-$lastupdate > $lastupdate) {
-				$pluginUpdate = file_get_contents('http://downloads.wordpress.org/plugin/'.$link.'.zip');
+				$pluginUpdate = @file_get_contents('http://downloads.wordpress.org/plugin/'.$link.'.zip');
 				$myFile = "../wp-content/uploads/cache-".$link.".zip";
 				$fh = fopen($myFile, 'w') or die("can't open file");
 				$stringData = $pluginUpdate;

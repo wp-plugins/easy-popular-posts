@@ -1,11 +1,11 @@
 <?php
 /*
 Plugin Name: Easy Popular Posts 
-Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts
+Plugin URI: http://regentware.com/software/web-based/wordpress-plugins/easy-popular-posts-plugin-for-wordpress/
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Author URI: http://thisismyurl.com
-Version: 1.1.5
+Version: 1.1.6
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
