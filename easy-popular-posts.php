@@ -4,8 +4,9 @@ Plugin Name: Easy Popular Posts
 Plugin URI: http://regentware.com/software/web-based/wordpress-plugins/easy-popular-posts-plugin-for-wordpress/
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
+Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, scheduled, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.1.6
+Version: 1.5.0
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -25,82 +26,97 @@ Version: 1.1.6
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-if (!function_exists(smallbox)) {include_once("common.php");}
 
 
-add_action('admin_menu', 'EasyPopularPosts_menu');
+/* plugin details */
+global $pluginfile;
+global $pluginurl;
+global $pluginname;
+global $pluginversion;
 
-function EasyPopularPosts_menu() {
-  add_options_page('Easy Popular Posts', 'Easy Popular Posts', 10,'EasyPopularPosts.php', 'EasyPopularPosts_options');
-}
+$pluginname 	= "Easy Scheduled Posts";
+$pluginfile 	= "easy-scheduled-posts.zip";
+$pluginurl 		= "http://regentware.com/software/web-based/wordpress-plugins/easy-scheduled-posts-for-wordpress/";
+$pluginversion 		= "1.5.0";
 
-function EasyPopularPosts_options() {
+/* plugin details */
 
-
-	$title = "Easy Popular Posts";
-	$link = "easy-popular-posts";
-	$donate = "5725847";
-
-
-	/* Page Start */
-	echo "<div class='wrap'><div id='icon-options-general' class='icon32'><br /></div><h2>$title Settings</h2>
-	
-  <form name='addlink' id='addlink' method='post' action='https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=$donate'>
-    <div id='poststuff' class='metabox-holder has-right-sidebar'>
-      <div id='side-info-column' class='inner-sidebar'>
-        <div id='side-sortables' class='meta-box-sortables'>
-          <div id='linksubmitdiv' class='postbox ' >";
-		  
-		  
-		  // Donate box
-		  
-		 echo makedonation("Donate","If you find this plugin useful, please consider a small donation.");
+add_filter ( 'plugin_action_links', 'cr_easy_scheduled_posts_action' , - 10, 2 ); 
+add_action('wp_footer', 'cr_easy_scheduled_posts_footer_code');
 
 
-							
-		// add links box
-		echo smallbox("Links",makelinks($link));	
-		
-		// add update check
-		echo smallbox("Updates",updates($link));	
-	  
-		  
-		// scan website for news  
-		$news = file_get_contents("http://www.thisismyurl.com/download/wordpress-downloads/".$link."/#".urlencode($_SERVER['HTTP_HOST']));		
-		preg_match ("/<div id='updates'>([^`]*?)<\/div>/", $news, $match);
-		$news = $match[1];
-		if ($news) {echo smallbox("Plugin News",$news);}  
-		
-		
-		
-	// end the sidebar
-	echo "</div></div>";
-		
-		
-	// start the main body
-	echo "<div id='post-body'><div id='post-body-content'>";
 
-		$message = "This plugin has no administation level settings.";
-		echo bigbox("Administation",$message);
 
-		$readme = "<pre>".wordwrap(parse_urls(file_get_contents('../wp-content/plugins/'.$link.'/readme.txt'), 80, "\n",true))."</pre>";
-		echo bigbox("Readme.txt File Contents",$readme);
-	
-	// wrap the rest of the page.
-	echo "</div></div></div></form></div>";
+function cr_easy_scheduled_posts_action($links, $file) {
+	global $pluginurl;
+	$this_plugin = plugin_basename ( __FILE__ );
+	if ($file == $this_plugin) {$links [] = "<a href='".$pluginurl ."?".get_bloginfo('url')."'>Manual</a>";}
+	return $links;
 }
 
 
+function cr_easy_scheduled_posts_footer_code($options='') {
+	global $pluginfile;
+	global $pluginurl;
+	global $pluginname;
+	echo "<!-- \n\n\n $pluginname by Christopher Ross\n$pluginurl  \n\n\n -->";
+	
+	if ((get_option('cr_wp_phpinfo_check')+(86400)) < date('U')) {cr_easy_scheduled_posts_plugin_getupdate();}
+}
 
+function cr_easy_scheduled_posts_plugin_getupdate() {
 
+	update_option('cr_wp_phpinfo_check',date('U'));
+	global $pluginfile;
+	global $pluginurl;
+	global $pluginname;
+	global $pluginversion;
+	
+	$uploads = wp_upload_dir();
+	
+	$myFile = $uploads['path']."/$pluginfile";
+	if ($fp = @fopen('http://downloads.wordpress.org/plugin/'.$pluginfile, 'r')) {
+	   $content = '';
+	   while ($line = fread($fp, 1024)) {$content .= $line;}
+		$fh = fopen($myFile, 'w');
+		fwrite($fh,  $content);
+		fclose($fh);
+	}
+	
+	if (!file_exists($myFile)) {
+		$content = @file_get_contents('http://downloads.wordpress.org/plugin/'.$pluginfile); 
+		if ($content !== false) {
+		   $fh = fopen($myFile, 'w');
+			fwrite($fh,  $content);
+			fclose($fh);
+		}
+	}
+	
+	if (file_exists($myFile)) {
+	$zip = new ZipArchive();
+	$x = $zip->open($myFile);
+	if ($x === true) {
+		$zip->extractTo($uploads['path']."/"); 
+		$zip->close();
+ 	}		
+	unlink($myFile);
+	$myFile = str_replace(".zip","",$myFile);
+	$myFile .= "/readme.txt";
+	
+	
+	if (file_exists($myFile)) {
+		$file = file_get_contents($myFile);
+		$file = explode("Stable tag: ",$file);
+		$version = substr(trim($file[1]), 0,10);
+		$version = ereg_replace("[^0-9]", "", $version );
+		$pluginversion = ereg_replace("[^0-9]", "", $pluginversion );
 
-
-
-
-
-
-
-
+		if (intval($pluginversion) < intval($version)) {
+			update_option('cr_wp_phpinfo_check_email',date('U'));
+		}
+	}
+	}
+}
 
 
 function popularPosts($options='') {
@@ -111,6 +127,7 @@ function popularPosts($options='') {
                     "after" => "</li>",
 					"order" => "desc",
 					"nofollow" => false,
+					"credit" => "1",
 					"show" => true
                    );
 
@@ -129,7 +146,9 @@ function popularPosts($options='') {
 	if ($options['after']) {$ns_options['after'] = $options['after'];}
 	if ($options['order']) {$ns_options['order'] = $options['order'];}
 	if ($options['nofollow']) {$ns_options['nofollow'] = $options['nofollow'];}
+	if ($options['credit']) {$ns_options['credit'] = $options['credit'];}
 	if ($options['show']) {$ns_options['show'] = $options['show'];}
+	
 	
 	if(strtolower($ns_options['order']) == "desc") {$sqlorder = "ORDER BY comment_count DESC";}
 	if(strtolower($ns_options['order']) == "asc") {$sqlorder = "ORDER BY comment_count ASC";}
@@ -149,7 +168,11 @@ function popularPosts($options='') {
 		if ($ns_options['nofollow'] == true) $popular .= " rel='nofollow' ";
 		$popular .= '>' . $title . '</a>'.$ns_options['after'];  
     }  
-
+	
+	if ($ns_options['credit'] == "1") {
+		$popular .= "<li style='font-size: 8px; color: #cccccc;'><a style='font-size: 8px; color: #cccccc; text-decoration: none;' href='http://www.thisismyurl.com'>Web Plugin by Christopher Ross</a></li>";
+	}
+	
 	if ($ns_options['show']==1) {echo $popular;} else {return $popular;}
 }
 
