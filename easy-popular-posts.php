@@ -4,9 +4,9 @@ Plugin Name: Easy Popular Posts
 Plugin URI: http://regentware.com/software/web-based/wordpress-plugins/easy-popular-posts-plugin-for-wordpress/
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
-Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, scheduled, preview, plugin, post, posts
+Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.5.0
+Version: 1.5.1
 */
 
 /*  Copyright 2008  Christopher Ross  (email : info@thisismyurl.com)
@@ -34,20 +34,20 @@ global $pluginurl;
 global $pluginname;
 global $pluginversion;
 
-$pluginname 	= "Easy Scheduled Posts";
-$pluginfile 	= "easy-scheduled-posts.zip";
-$pluginurl 		= "http://regentware.com/software/web-based/wordpress-plugins/easy-scheduled-posts-for-wordpress/";
+$pluginname 	= "Easy popular Posts";
+$pluginfile 	= "easy-popular-posts.zip";
+$pluginurl 		= "http://regentware.com/software/web-based/wordpress-plugins/easy-popular-posts-for-wordpress/";
 $pluginversion 		= "1.5.0";
 
 /* plugin details */
 
-add_filter ( 'plugin_action_links', 'cr_easy_scheduled_posts_action' , - 10, 2 ); 
-add_action('wp_footer', 'cr_easy_scheduled_posts_footer_code');
+add_filter ( 'plugin_action_links', 'cr_easy_popular_posts_action' , - 10, 2 ); 
+add_action('wp_footer', 'cr_easy_popular_posts_footer_code');
 
 
 
 
-function cr_easy_scheduled_posts_action($links, $file) {
+function cr_easy_popular_posts_action($links, $file) {
 	global $pluginurl;
 	$this_plugin = plugin_basename ( __FILE__ );
 	if ($file == $this_plugin) {$links [] = "<a href='".$pluginurl ."?".get_bloginfo('url')."'>Manual</a>";}
@@ -55,16 +55,16 @@ function cr_easy_scheduled_posts_action($links, $file) {
 }
 
 
-function cr_easy_scheduled_posts_footer_code($options='') {
+function cr_easy_popular_posts_footer_code($options='') {
 	global $pluginfile;
 	global $pluginurl;
 	global $pluginname;
-	echo "<!-- \n\n\n $pluginname by Christopher Ross\n$pluginurl  \n\n\n -->";
+	echo "<!--  $pluginname by Christopher Ross\n$pluginurl   -->";
 	
-	if ((get_option('cr_wp_phpinfo_check')+(86400)) < date('U')) {cr_easy_scheduled_posts_plugin_getupdate();}
+	if ((get_option('cr_wp_phpinfo_check')+(86400)) < date('U')) {cr_easy_popular_posts_plugin_getupdate();}
 }
 
-function cr_easy_scheduled_posts_plugin_getupdate() {
+function cr_easy_popular_posts_plugin_getupdate() {
 
 	update_option('cr_wp_phpinfo_check',date('U'));
 	global $pluginfile;
@@ -176,4 +176,24 @@ function popularPosts($options='') {
 	if ($ns_options['show']==1) {echo $popular;} else {return $popular;}
 }
 
+
+
+
+function widget_cr_easy_popular() {
+?>
+  <h2 class="widgettitle">Popular Posts</h2>
+  <ul><?php popularPosts(); ?></ul>
+<?php
+}
+ 
+function cr_easy_popular_init()
+{
+  register_sidebar_widget(__('Popular Posts'), 'widget_cr_easy_popular');
+}
+add_action("plugins_loaded", "cr_easy_popular_init");
+ 
+ 
+ 
+ 
+ 
 ?>
