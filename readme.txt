@@ -15,10 +15,7 @@ An easy to use WordPress function to add popular posts to any theme. The results
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
 
-== Screenshots ==
-
-1. screenshot-1.png
-
+You can also include the the list in a post using a shortcode [popularPosts] or as a widget.
 
 == Installation ==
 
@@ -34,9 +31,20 @@ Updates to the plugin will be posted here, to [thisismyurl]
 
 == Frequently Asked Questions ==
 
-= How do I display the results? =
+== Frequently Asked Questions ==
 
-Insert the following code into your WordPress theme files: 
+= How do I display the results in my PHP code? =
+
+popularPosts();
+
+= How do I display the results in my posts? =
+
+Include the shortcode [popularPosts] in any post or page.
+
+= How do I include the results as a widget? =
+
+On your Widgets page, simply drag and drop the widget to your sidebar!
+
 
 =General results=
 Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.

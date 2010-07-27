@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add popular posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.5.2
+Version: 1.5.3
 */
 
 /*
@@ -217,6 +217,7 @@ add_action("plugins_loaded", "cr_easy_popular_init");
 }
 
 
- 
+ add_shortcode('popularPosts', 'popularPosts');
+
  
 ?>
