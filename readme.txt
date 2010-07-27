@@ -6,7 +6,7 @@ Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, m
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847
 Requires at least: 2.0.0
 Tested up to: 3.0.0
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
@@ -25,6 +25,8 @@ An easy to use WordPress function to add popular posts to any theme. The results
 To install the plugin, please upload the folder to your plugins folder and active the plugin.
 
 == Screenshots ==
+
+1. Screenshot of Widget
 
 == Updates ==
 Updates to the plugin will be posted here, to [thisismyurl]
@@ -77,19 +79,33 @@ If you would like to donate to help support future development of this tool, ple
 
 == Change Log ==
 
-0.1.0 	- Added admin menus
-0.1.1 	- Added an ORDER option
-0.1.2	- Fixed the readme.txt file
-1.0.0	- Official Release
-1.1.0   - WP2.8 Compatibility Fixes
-1.1.5	- WP2.8.6 review, documentation update
+= 1.5.2 =
 
-1.5.0
+* Fixed documentation
+* Updated Links
 
-- Rewrote common functions
-- Removed options page (no options
-- Added credit option to plugin
+= 1.5.1 =
 
-1.5.1
+* Added widget
 
-- Added widget
+= 1.5.0 =
+
+* Rewrote common functions
+* Removed options page (no options)
+* Added credit option to plugin
+
+= 1.1.5  =  
+
+* WP2.8.6 Compatibility Review, documentation fixes
+
+= 1.1.0   =
+
+* WP2.8 Compatibility Fixes
+
+= 1.0.0 =	
+
+* Official Release
+
+= 0.1.0 =
+
+* Added admin menus
