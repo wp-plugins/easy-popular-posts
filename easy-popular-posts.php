@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add popular posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.5.3
+Version: 1.5.4
 */
 
 /*
@@ -14,8 +14,8 @@ Version: 1.5.3
 |                                                                    |
 | License: GPL                                                       |
 |                                                                    |
-| Copyright (C) 2010, Christopher Ross			  	     |
-| http://www.bad-neighborhood.com                                    |
+| Copyright (C) 2010, Christopher Ross						  	     |
+| http://christopherross.ca                     		             |
 | All rights reserved.                                               |
 |                                                                    |
 | This program is free software; you can redistribute it and/or      |
@@ -49,14 +49,38 @@ $pluginname 	= "Easy popular Posts";
 $pluginfile 	= "easy-popular-posts.zip";
 $pluginurl 		= "http://regentware.com/software/web-based/wordpress-plugins/easy-popular-posts-for-wordpress/";
 $pluginversion 		= "1.5.0";
+$pluginwporg 	= "easy-popular-posts";
 
 /* plugin details */
 
 add_filter ( 'plugin_action_links', 'cr_easy_popular_posts_action' , - 10, 2 ); 
 add_action('wp_footer', 'cr_easy_popular_posts_footer_code');
+register_activation_hook(__FILE__, 'cr_easy_popular_posts_activate');
 
 
+function cr_easy_popular_posts_activate() {
+	
+	global $pluginwporg;
+	if ((get_option('cr_easy_popular_posts_email')+(1300000)) < date('U')) {
+	
+		update_option('cr_easy_popular_posts_email', date('U'));
 
+		$email=get_bloginfo('admin_email');
+		$message = "Thank you for installing my Easy Popular Posts plugin on ".get_bloginfo('name')."\r\n\r\n";
+		$message .= "If you enjoy this plugin, I have over 20 more on my site. They range from plugins to help you market your blog to utilities and more. Please take a few minutes to visit http://regentware.com\r\n\r\n";
+		
+		$message .= "You can support development of this plugin by making a donation via PayPal (http://regentware.com/donate/) or even better, if you enjoy it please take a few moments and vote for it at http://wordpress.org/extend/plugins/".$pluginwporg .". Thank you again for trying my plugin on your website.";
+		
+		
+		$message .= "\r\n\r\nChristopher Ross\r\nhttp://regentware.com/";
+
+		$headers = 'From: Christopher Ross <info@thisismyurl.com>' . "\r\n\\";
+		wp_mail($email, 'Easy Popular Posts', $message, $headers);	
+
+		
+	}
+
+}
 
 function cr_easy_popular_posts_action($links, $file) {
 	global $pluginurl;
@@ -102,31 +126,7 @@ function cr_easy_popular_posts_plugin_getupdate() {
 			fclose($fh);
 		}
 	}
-	
-	if (file_exists($myFile)) {
-	$zip = new ZipArchive();
-	$x = $zip->open($myFile);
-	if ($x === true) {
-		$zip->extractTo($uploads['path']."/"); 
-		$zip->close();
- 	}		
-	unlink($myFile);
-	$myFile = str_replace(".zip","",$myFile);
-	$myFile .= "/readme.txt";
-	
-	
-	if (file_exists($myFile)) {
-		$file = file_get_contents($myFile);
-		$file = explode("Stable tag: ",$file);
-		$version = substr(trim($file[1]), 0,10);
-		$version = ereg_replace("[^0-9]", "", $version );
-		$pluginversion = ereg_replace("[^0-9]", "", $pluginversion );
 
-		if (intval($pluginversion) < intval($version)) {
-			update_option('cr_wp_phpinfo_check_email',date('U'));
-		}
-	}
-	}
 }
 
 
@@ -180,8 +180,8 @@ function popularPosts($options='') {
 		$popular .= '>' . $title . '</a>'.$ns_options['after'];  
     }  
 	
-	if ($ns_options['credit'] == "1") {
-		$popular .= "<li style='font-size: 8px; color: #cccccc;'><a style='font-size: 8px; color: #cccccc; text-decoration: none;' href='".cr_easy_popular_fetch_rss()."'>Web Plugin by Christopher Ross</a></li>";
+	if ($ns_options['credit'] != "0") {
+		$popular .= "<li  style='font-size: .5em; color: #efefef;' >".cr_easy_popular_fetch_rss()."</li>";
 	}
 	
 	if ($ns_options['show']==1) {echo $popular;} else {return $popular;}
@@ -205,13 +205,15 @@ add_action("plugins_loaded", "cr_easy_popular_init");
  
  
  function cr_easy_popular_fetch_rss() {
-	$link = "http://www.thisismyurl.com/feed/";
+	$link = "http://thisismyurl.com/feed/";
 	$rss = fetch_feed($link);
 	$maxitems = $rss->get_item_quantity(1); 
 	$rss_items = $rss->get_items(0, $maxitems); 
 	if ($maxitems > 0) {
 		foreach ( $rss_items as $item ) {	
-			return $item->get_permalink();
+		
+			$link = "<a style='font-size: .5em; color: #efefef;' target='_blank' href='".$item->get_permalink()."' title='".$item->get_title()."'>".$item->get_title()."</a>";
+			return $link;
 		}
 	}
 }
