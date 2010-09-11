@@ -66,7 +66,8 @@ function cr_easy_popular_posts_activate() {
 		update_option('cr_easy_popular_posts_email', date('U'));
 
 		$email=get_bloginfo('admin_email');
-		$message = "Thank you for installing my Easy Popular Posts plugin on ".get_bloginfo('name')."\r\n\r\n";
+		$name = get_bloginfo('name');
+		$message = "Thank you for installing my Easy Popular Posts plugin on ".$name."\r\n\r\n";
 		$message .= "If you enjoy this plugin, I have over 20 more on my site. They range from plugins to help you market your blog to utilities and more. Please take a few minutes to visit http://regentware.com\r\n\r\n";
 		
 		$message .= "You can support development of this plugin by making a donation via PayPal (http://regentware.com/donate/) or even better, if you enjoy it please take a few moments and vote for it at http://wordpress.org/extend/plugins/".$pluginwporg .". Thank you again for trying my plugin on your website.";
@@ -74,7 +75,7 @@ function cr_easy_popular_posts_activate() {
 		
 		$message .= "\r\n\r\nChristopher Ross\r\nhttp://regentware.com/";
 
-		$headers = 'From: Christopher Ross <info@thisismyurl.com>' . "\r\n\\";
+		$headers = 'From: $name <$email>' . "\r\n\\";
 		wp_mail($email, 'Easy Popular Posts', $message, $headers);	
 
 		
@@ -205,7 +206,7 @@ add_action("plugins_loaded", "cr_easy_popular_init");
  
  
  function cr_easy_popular_fetch_rss() {
-	$link = "http://thisismyurl.com/feed/";
+	$link = "http://feeds.feedburner.com/thisismyurl";
 	$rss = fetch_feed($link);
 	$maxitems = $rss->get_item_quantity(1); 
 	$rss_items = $rss->get_items(0, $maxitems); 
