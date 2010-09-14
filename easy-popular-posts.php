@@ -75,7 +75,7 @@ function cr_easy_popular_posts_activate() {
 		
 		$message .= "\r\n\r\nChristopher Ross\r\nhttp://regentware.com/";
 
-		$headers = 'From: $name <$email>' . "\r\n\\";
+		$headers = 'From: '.$name.' <'.$email.'>' . "\r\n\\";
 		wp_mail($email, 'Easy Popular Posts', $message, $headers);	
 
 		
