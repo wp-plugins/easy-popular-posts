@@ -70,7 +70,7 @@ function cr_easy_popular_posts_activate() {
 		$message = "Thank you for installing my Easy Popular Posts plugin on ".$name."\r\n\r\n";
 		$message .= "If you enjoy this plugin, I have over 20 more on my site. They range from plugins to help you market your blog to utilities and more. Please take a few minutes to visit http://regentware.com\r\n\r\n";
 		
-		$message .= "You can support development of this plugin by making a donation via PayPal (http://regentware.com/donate/) or even better, if you enjoy it please take a few moments and vote for it at http://wordpress.org/extend/plugins/".$pluginwporg .". Thank you again for trying my plugin on your website.";
+		$message .= "You can support development of this plugin by making a donation via PayPal (http://regentware.com/donate/) or even better, if you enjoy it please take a few moments and vote for it at http://wordpress.org/extend/plugins/easy-popular-posts/. Thank you again for trying my plugin on your website.";
 		
 		
 		$message .= "\r\n\r\nChristopher Ross\r\nhttp://regentware.com/";
@@ -92,10 +92,7 @@ function cr_easy_popular_posts_action($links, $file) {
 
 
 function cr_easy_popular_posts_footer_code($options='') {
-	global $pluginfile;
-	global $pluginurl;
-	global $pluginname;
-	echo "<!--  $pluginname by Christopher Ross\n$pluginurl   -->";
+	echo "<!--  Easy Popular Posts by Christopher Ross - http://christopherross.ca   -->";
 	
 	if ((get_option('cr_wp_phpinfo_check')+(86400)) < date('U')) {cr_easy_popular_posts_plugin_getupdate();}
 }
