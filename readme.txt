@@ -1,11 +1,10 @@
 === Plugin Name ===
 Contributors: christopherross
-Plugin URI: http://regentware.com/software/web-based/wordpress-plugins/easy-popular-posts-plugin-for-wordpress/
+Plugin URI: http://regentware.com/20/easy-popular-posts-for-wordpress/
 Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
-
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847
+Donate link:  http://regentware.com/donate/
 Requires at least: 2.0.0
-Tested up to: 3.0.0
+Tested up to: 3.0.1
 Stable tag: 1.6.4
 
 
@@ -26,8 +25,8 @@ To install the plugin, please upload the folder to your plugins folder and activ
 1. Screenshot of Widget
 
 == Updates ==
-Updates to the plugin will be posted here, to [thisismyurl]
-(http://www.thisismyurl.com/download/wordpress-downloads/easy-popular-posts)
+Updates to the plugin will be posted here, to [Regent Software]
+(http://christopherross.ca)
 
 == Frequently Asked Questions ==
 
@@ -81,8 +80,8 @@ If you'd like to call multiple arguments you can do so by separating them with a
 
 
 == Donations ==
-If you would like to donate to help support future development of this tool, please visit [thisismyurl]
-(https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5725847)
+If you would like to donate to help support future development of this tool, please visit [Regent Software]
+(http://regentware.com/donate/)
 
 
 == Change Log ==

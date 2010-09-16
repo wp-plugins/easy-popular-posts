@@ -5,7 +5,7 @@ Plugin URI: http://regentware.com/software/web-based/wordpress-plugins/easy-popu
 Description: An easy to use WordPress function to add popular posts to any theme.
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
-Author URI: http://thisismyurl.com
+Author URI: http://christopherross.ca
 Version: 1.6.4
 */
 
