@@ -94,38 +94,9 @@ function cr_easy_popular_posts_action($links, $file) {
 function cr_easy_popular_posts_footer_code($options='') {
 	echo "<!--  Easy Popular Posts by Christopher Ross - http://christopherross.ca   -->";
 	
-	if ((get_option('cr_wp_phpinfo_check')+(86400)) < date('U')) {cr_easy_popular_posts_plugin_getupdate();}
 }
 
-function cr_easy_popular_posts_plugin_getupdate() {
 
-	update_option('cr_wp_phpinfo_check',date('U'));
-	global $pluginfile;
-	global $pluginurl;
-	global $pluginname;
-	global $pluginversion;
-	
-	$uploads = wp_upload_dir();
-	
-	$myFile = $uploads['path']."/$pluginfile";
-	if ($fp = @fopen('http://downloads.wordpress.org/plugin/'.$pluginfile, 'r')) {
-	   $content = '';
-	   while ($line = fread($fp, 1024)) {$content .= $line;}
-		$fh = fopen($myFile, 'w');
-		fwrite($fh,  $content);
-		fclose($fh);
-	}
-	
-	if (!file_exists($myFile)) {
-		$content = @file_get_contents('http://downloads.wordpress.org/plugin/'.$pluginfile); 
-		if ($content !== false) {
-		   $fh = fopen($myFile, 'w');
-			fwrite($fh,  $content);
-			fclose($fh);
-		}
-	}
-
-}
 
 
 function popularPosts($options='') {
@@ -177,9 +148,9 @@ function popularPosts($options='') {
 		if ($ns_options['nofollow'] == true) $popular .= " rel='nofollow' ";
 		$popular .= '>' . $title . '</a>'.$ns_options['after'];  
     }  
-	
-	if ($ns_options['credit'] != "0") {
-		$popular .= "<li  style='font-size: .5em; color: #efefef;' >".cr_easy_popular_fetch_rss()."</li>";
+
+	if ($ns_options['credit'] != "0" || htmlspecialchars($_POST['widget_cr_easy_popular_credit']) != "0") {
+		$popular .= "<li >".cr_easy_popular_fetch_rss()."</li>";
 	}
 	
 	if ($ns_options['show']==1) {echo $popular;} else {return $popular;}
@@ -190,13 +161,58 @@ function popularPosts($options='') {
 
 function widget_cr_easy_popular() {
 ?>
-  <h2 class="widgettitle">Popular Posts</h2>
+  <h2 class="widgettitle"><?php 
+  
+    $options = get_option("widget_cr_easy_popular");
+    $options['title'] = htmlspecialchars($_POST['widget_cr_easy_popular_title']);
+  
+  echo  $options['title']; ?></h2>
   <ul><?php popularPosts(); ?></ul>
 <?php
 }
  
+ 
+ 
+function widget_cr_easy_popular_control()
+{
+  $options = get_option("widget_cr_easy_popular");
+  if (!is_array( $options ))
+{
+$options = array(
+      'title' => 'Popular Posts',
+	  'credit' => '1'
+      );
+  }
+ 
+  if ($_POST['widget_cr_easy_popular-Submit'])
+  {
+    $options['title'] = htmlspecialchars($_POST['widget_cr_easy_popular_title']);
+	$options['credit'] = htmlspecialchars($_POST['widget_cr_easy_popular_credit']);
+    update_option("widget_cr_easy_popular", $options);
+  }
+ 
+?>
+  <p>
+    <label for="widget_cr_easy_popular_title">Widget Title: </label>
+    <input type="text" id="widget_cr_easy_popular_title" name="widget_cr_easy_popular_title" value="<?php echo $options['title'];?>" />
+    
+  </p>
+  <p>
+    <label for="widget_cr_easy_popular_title">Include Credit Link: </label>
+    <input name="widget_cr_easy_popular_credit" type="checkbox" value="1" <?php if ($options['credit'] == 1) {echo " checked ";}?>>
+  </p>
+    <input type="hidden" id="myHelloWorld-Submit" name="myHelloWorld-Submit" value="1" />
+<?php
+}
+
+ 
+
+ 
 function cr_easy_popular_init()
 {
+  register_sidebar_widget(__('Popular Posts'), 'widget_cr_easy_popular');
+  register_widget_control(   'Popular Posts', 'widget_cr_easy_popular_control', 300, 200 );
+
   register_sidebar_widget(__('Popular Posts'), 'widget_cr_easy_popular');
 }
 add_action("plugins_loaded", "cr_easy_popular_init");
@@ -210,7 +226,7 @@ add_action("plugins_loaded", "cr_easy_popular_init");
 	if ($maxitems > 0) {
 		foreach ( $rss_items as $item ) {	
 		
-			$link = "<a style='font-size: .5em; color: #efefef;' target='_blank' href='".$item->get_permalink()."' title='".$item->get_title()."'>".$item->get_title()."</a>";
+			$link = "<a target='_blank' href='".$item->get_permalink()."' title='".$item->get_title()."'>".$item->get_title()."</a>";
 			return $link;
 		}
 	}
