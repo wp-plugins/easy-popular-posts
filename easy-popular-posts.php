@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add popular posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.5.4
+Version: 1.6.4
 */
 
 /*
@@ -110,24 +110,23 @@ function popularPosts($options='') {
 					"credit" => "1",
 					"show" => true
                    );
-
 	$options = explode("&",$options);
 	
 	
 	foreach ($options as $option) {
+	
 		$parts = explode("=",$option);
 		$options[$parts[0]] = $parts[1];
 	
 	}
 	
 	if ($options['count']) {$ns_options['count'] = $options['count'];}
-	if ($options['comments']) {$ns_options['comments'] = $options['comments'];}
 	if ($options['before']) {$ns_options['before'] = $options['before'];}
 	if ($options['after']) {$ns_options['after'] = $options['after'];}
-	if ($options['order']) {$ns_options['order'] = $options['order'];}
 	if ($options['nofollow']) {$ns_options['nofollow'] = $options['nofollow'];}
-	if ($options['credit']) {$ns_options['credit'] = $options['credit'];}
 	if ($options['show']) {$ns_options['show'] = $options['show'];}
+	if ($options['credit'] == 0) {$ns_options['credit'] = $options['credit'];}
+	
 	
 	
 	if(strtolower($ns_options['order']) == "desc") {$sqlorder = "ORDER BY comment_count DESC";}
@@ -149,7 +148,7 @@ function popularPosts($options='') {
 		$popular .= '>' . $title . '</a>'.$ns_options['after'];  
     }  
 
-	if ($ns_options['credit'] != "0" || htmlspecialchars($_POST['widget_cr_easy_popular_credit']) != "0") {
+	if ($ns_options['credit'] == "1") {
 		$popular .= "<li >".cr_easy_popular_fetch_rss()."</li>";
 	}
 	
@@ -163,11 +162,20 @@ function widget_cr_easy_popular() {
 ?>
   <h2 class="widgettitle"><?php 
   
-    $options = get_option("widget_cr_easy_popular");
-    $options['title'] = htmlspecialchars($_POST['widget_cr_easy_popular_title']);
+$options = get_option("widget_cr_easy_popular");
+  if (!is_array( $options ))
+{
+$options = array(
+      'title' => 'Popular Posts',
+	  'credit' => '1'
+      );
+  }
   
-  echo  $options['title']; ?></h2>
-  <ul><?php popularPosts(); ?></ul>
+  if ($options['credit'] != '1') {$options['credit'] = '0';}
+  
+  
+    echo  $options['title']; ?></h2>
+	<ul><?php popularPosts('credit='.$options['credit']); ?></ul>
 <?php
 }
  
@@ -201,7 +209,7 @@ $options = array(
     <label for="widget_cr_easy_popular_title">Include Credit Link: </label>
     <input name="widget_cr_easy_popular_credit" type="checkbox" value="1" <?php if ($options['credit'] == 1) {echo " checked ";}?>>
   </p>
-    <input type="hidden" id="myHelloWorld-Submit" name="myHelloWorld-Submit" value="1" />
+    <input type="hidden" id="widget_cr_easy_popular-Submit" name="widget_cr_easy_popular-Submit" value="1" />
 <?php
 }
 
@@ -211,7 +219,7 @@ $options = array(
 function cr_easy_popular_init()
 {
   register_sidebar_widget(__('Popular Posts'), 'widget_cr_easy_popular');
-  register_widget_control(   'Popular Posts', 'widget_cr_easy_popular_control', 300, 200 );
+  register_widget_control(   'Popular Posts', 'widget_cr_easy_popular_control', 200, 200 );
 
   register_sidebar_widget(__('Popular Posts'), 'widget_cr_easy_popular');
 }
