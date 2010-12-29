@@ -1,11 +1,11 @@
 === Plugin Name ===
 Contributors: christopherross
-Plugin URI: http://regentware.com/20/easy-popular-posts-for-wordpress/
+Plugin URI: http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/
 Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
-Donate link:  http://regentware.com/donate/
+Donate link:  http://thisismyurl.com/
 Requires at least: 2.0.0
-Tested up to: 3.0.1
-Stable tag: 1.6.4
+Tested up to: 3.0.3
+Stable tag: 1.6.5
 
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
@@ -25,16 +25,14 @@ To install the plugin, please upload the folder to your plugins folder and activ
 1. Screenshot of Widget
 
 == Updates ==
-Updates to the plugin will be posted here, to [Regent Software]
-(http://christopherross.ca)
-
-== Frequently Asked Questions ==
+Updates to the plugin will be posted here, to [Christopher Ross]
+(http://thisismyurl.com)
 
 == Frequently Asked Questions ==
 
 = How do I display the results in my PHP code? =
 
-popularPosts();
+&lt;?php popularPosts(); ?&gt;
 
 = How do I display the results in my posts? =
 
@@ -44,47 +42,53 @@ Include the shortcode [popularPosts] in any post or page.
 
 On your Widgets page, simply drag and drop the widget to your sidebar!
 
-
 =General results=
 Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.
 
- popularPosts();
+&lt;?php popularPosts(); ?&gt;
 
 =Specific number of results=
 If you would like to return a specific number of results as your maximum:
 
- popularPosts('count=10');
+&lt;?php popularPosts('count=10'); ?&gt;
 
 =Altering the before and after values=<
 By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can specify how to format the results using the following code:
 
- popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;');
+&lt;?php popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;'); ?&gt;
 
 
 =The Order=<
 You can now change the order of the results using ASC, DESC or RAND to return the results in ascending, descending or random order.
 
- popularPosts('order=ASC');
+&lt;?php popularPosts('order=ASC'); ?&gt;
 
 
 =Echo vs. Return=
 Finally, if you'd like to copy the results into a variable you can return the results as follows:
 
- popularPosts('show=false'); 
+&lt;?php popularPosts('show=false'); ?&gt;
 
 =Combining Arguements=
 
 If you'd like to call multiple arguments you can do so by separating them with a & symbol:
 
- popularPosts('show=false&order=ASC'); 
+&lt;?php popularPosts('show=false&order=ASC'); ?&gt;
 
 
 == Donations ==
-If you would like to donate to help support future development of this tool, please visit [Regent Software]
-(http://regentware.com/donate/)
+If you would like to donate to help support future development of this tool, please visit [Christopher Ross]
+(http://thisismyurl.com/)
 
 
 == Change Log ==
+
+= 1.6.5 =
+
+* removed RSS feed from thisismyurl.com
+* removed manual link
+* fixed credit link to work reliably for show / no-show options
+
 
 = 1.6.4 =
 
