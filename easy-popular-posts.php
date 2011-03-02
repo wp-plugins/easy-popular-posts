@@ -218,6 +218,34 @@ function cr_epp_options($options='') {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Shortcode
 add_shortcode( 'popularPosts', 'popularPosts' );
 
@@ -226,13 +254,13 @@ add_shortcode( 'popularPosts', 'popularPosts' );
 add_action( 'widgets_init', create_function( '', 'return register_widget( "PopularPosts" );' ) );
 
 
-
-function cr_easy_popular_posts_action( $links, $file ) {
-	return $links;
+function cr_easy_popular_posts_activate() {
+	
 }
 
 
-function popularPosts( $options = '' ) {
+
+function cr_easy_popular_posts_get_options($options = '' ) {
 	$ns_options = array(
 		"count"    => "10",
 		"comments" => "0",
@@ -249,6 +277,13 @@ function popularPosts( $options = '' ) {
 		$parts = explode("=",$option);
 		$ns_options[$parts[0]] = $parts[1];
 	}
+	
+	return $ns_options;
+}
+
+
+function getPopularPosts($options = '' ) {
+	$ns_options = cr_easy_popular_posts_get_options($options);
 
 	if ( strtolower( $ns_options['order'] ) == "desc" ) {
 		$sqlorder = "ORDER BY comment_count DESC";
@@ -267,6 +302,14 @@ function popularPosts( $options = '' ) {
 		WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $ns_options['comments']."
 		" . $sqlorder . " LIMIT 0 , " . $ns_options['count']
 	);
+	
+	return $posts;
+}
+
+function popularPosts( $options = '' ) {
+	$ns_options = cr_easy_popular_posts_get_options($options);
+	$posts = getPopularPosts($options);
+	
     foreach ( $posts as $post ) {
         setup_postdata( $post );
         $id    = $post->ID;
@@ -279,11 +322,11 @@ function popularPosts( $options = '' ) {
 		$popular .= '>' . $title . '</a>' . $ns_options['after'];
     }
 
-	if ( $ns_options['credit'] ) {
-		$popular .= "<li style='opacity:0.4;filter:alpha(opacity=40);'><a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/?source=" . urlencode(get_bloginfo('url')) . "' style='opacity:0.4;filter:alpha(opacity=40);' target='_blank'>".__('Easy Popular Posts by Christopher Ross')."</a></li>";
+	if ( $ns_options['credit'] !== 'false' ) {
+		$popular .= "<li style='opacity:0.4;filter:alpha(opacity=40);'><a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/?source=" . urlencode(get_bloginfo('url')) . "' style='opacity:0.4;filter:alpha(opacity=40);' target='_blank'>Easy Popular Posts by Christopher Ross</a></li>";
 	}
 
-	if ( $ns_options['show'] ) {
+	if ( $ns_options['show'] !== 'false') {
 		echo $popular;
 	} else {
 		return $popular;
@@ -329,15 +372,16 @@ class PopularPosts extends WP_Widget {
 		$credit = strip_tags( $instance['credit'] );
         ?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:','epp' ); ?></label>
 			<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
 		</p>
 		<p>
 			<input class="checkbox" id="<?php echo $this->get_field_id( 'credit' ); ?>" name="<?php echo $this->get_field_name( 'credit' ); ?>" type="checkbox" value="true" <?php if ( $credit == true ) echo 'checked="checked" ';?>/>
-			<label for="<?php echo $this->get_field_id( 'credit' ); ?>"><?php _e( 'Include Credit link' ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'credit' ); ?>"><?php _e( 'Include Credit link','epp' ); ?></label>
 		</p>
         <?php
 	}
 }
+
 
 ?>
