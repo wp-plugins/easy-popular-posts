@@ -41,7 +41,7 @@ msgstr ""
 
 #. Text in function
 #: common.php:71
-msgid "A special thank you to the follow people for donating to support my plugin work."
+msgid "A special thank you to the following people for donating to support my plugin work."
 msgstr ""
 
 #. Text in function

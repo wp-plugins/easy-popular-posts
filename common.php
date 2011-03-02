@@ -45,7 +45,7 @@ _
 		
 		if (strlen($content) > 0) {
 			echo "
-				<p>".__('A special thank you to the follow people for donating to support my plugin work.')."</p>
+				<p>".__('A special thank you to the following people for donating to support my plugin work.')."</p>
 				<ul style='padding: 5px; list-style: square; margin-left: 20px;'>$content</ul>
 			";
 		}
