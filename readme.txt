@@ -5,7 +5,7 @@ Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, m
 Donate link:  http://thisismyurl.com/
 Requires at least: 2.8.0
 Tested up to: 3.0.4
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 
 
 An easy to use WordPress function to add popular posts to any theme. The results can be displayed in many ways and it has been tested with popular caching scripts. This is the code that I use on my own website, as well as several popular client websites.
@@ -83,6 +83,11 @@ If you would like to donate to help support future development of this tool, ple
 
 == Change Log ==
 
+= 1.7.2 =
+
+* Fixed localhost reference
+* Removed opacity attribute
+ 
 = 1.7.1 =
 
 * Fixed show=false and credit=false

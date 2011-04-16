@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add popular posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.7.1
+Version: 1.7.2
 */
 
 /*
@@ -97,7 +97,7 @@ function cr_epp_options($options='') {
 <div class="wrap">
 
 	<a href="http://thisismyurl.com/"><div id="cross-icon" style="background: url('<?php echo WP_PLUGIN_URL .'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__));?>/icon.png') no-repeat;" class="icon32"><br /></div></a>
-	<h2><?php echo __('Easy Popular Posts by Christopher Ross');?></h2>
+	<h2><?php _e('Easy Popular Posts by Christopher Ross');?></h2>
 	
 
 
@@ -109,9 +109,9 @@ function cr_epp_options($options='') {
 		
 			<div id="wpsettings" class="postbox">
 			<div class="handlediv" title="Click to toggle"><br /></div>
-			<h3 class="hndle"><span><?php echo __('Settings');?></span></h3>
+			<h3 class="hndle"><span><?php _e('Settings');?></span></h3>
 			<div class="inside">
-				<p><?php echo __('This plugin has no settings. To use the plugun effectively, please consult the');?> <a target='_blank' href='<?php echo WP_PLUGIN_URL .'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'readme.txt';?>'><?php echo __('readme file');?></a>.</p>
+				<p><?php _e('This plugin has no settings. To use the plugin effectively, please consult the');?> <a target='_blank' href='<?php echo WP_PLUGIN_URL .'/'.str_replace(basename( __FILE__),"",plugin_basename(__FILE__)).'readme.txt';?>'><?php _e('readme file');?></a>.</p>
 			</div>
 			</div>
 			
@@ -123,6 +123,9 @@ function cr_epp_options($options='') {
 			
 		</div>
 		</div>
+		
+
+		
 	</div>
 	
 
@@ -157,7 +160,7 @@ function cr_epp_options($options='') {
 			.value {width: 70%; float: left;}
 	   </style>
 	   
-	   <script type='text/javascript' src='http://localhost:8888/wp-admin/load-scripts.php?c=1&amp;load=hoverIntent,common,jquery-color,wp-ajax-response,wp-lists,jquery-ui-core,jquery-ui-resizable,admin-comments,jquery-ui-sortable,postbox,dashboard,thickbox,plugin-install,media-upload&amp;ver=1c33e12a06a28402104d18bdc95ada53'></script>
+	   <script type='text/javascript' src='<?php bloginfo('url');?>/wp-admin/load-scripts.php?c=1&amp;load=hoverIntent,common,jquery-color,wp-ajax-response,wp-lists,jquery-ui-core,jquery-ui-resizable,admin-comments,jquery-ui-sortable,postbox,dashboard,thickbox,plugin-install,media-upload&amp;ver=1c33e12a06a28402104d18bdc95ada53'></script>
 	
 	
 	
@@ -181,7 +184,7 @@ function cr_epp_options($options='') {
 				'uid': '2',
 				'time':'1296327223'
 			},
-			ajaxurl = 'http://localhost:8888/wp-admin/admin-ajax.php',
+			ajaxurl = '<?php bloginfo('url');?>/wp-admin/admin-ajax.php',
 			pagenow = 'settings_page_cr_epp',
 			typenow = '',
 			adminpage = 'settings_page_cr_epp',
@@ -190,7 +193,7 @@ function cr_epp_options($options='') {
 			isRtl = 0;
 		//]]>
 		</script>
-		<link rel='stylesheet' href='http://localhost:8888/wp-admin/load-styles.php?c=1&amp;dir=ltr&amp;load=dashboard,plugin-install,global,wp-admin&amp;ver=030f653716b08ff25b8bfcccabe4bdbd' type='text/css' media='all' />
+		<link rel='stylesheet' href='<?php bloginfo('url');?>/wp-admin/load-styles.php?c=1&amp;dir=ltr&amp;load=dashboard,plugin-install,global,wp-admin&amp;ver=030f653716b08ff25b8bfcccabe4bdbd' type='text/css' media='all' />
 		<script type='text/javascript'>
 		/* <![CDATA[ */
 		var quicktagsL10n = {
@@ -207,7 +210,7 @@ function cr_epp_options($options='') {
 		try{convertEntities(quicktagsL10n);}catch(e){};
 		/* ]]> */
 		</script>
-		<script type='text/javascript' src='http://localhost:8888/wp-admin/load-scripts.php?c=1&amp;load=jquery,utils,quicktags&amp;ver=b50ff5b9792a9e89a2e131ad3119a463'></script>
+		<script type='text/javascript' src='<?php bloginfo('url');?>/wp-admin/load-scripts.php?c=1&amp;load=jquery,utils,quicktags&amp;ver=b50ff5b9792a9e89a2e131ad3119a463'></script>
 	
 	
 	
@@ -255,6 +258,10 @@ add_action( 'widgets_init', create_function( '', 'return register_widget( "Popul
 
 
 function cr_easy_popular_posts_activate() {
+	
+	// create an email reminder for a week from now
+	
+	
 	
 }
 
@@ -323,7 +330,7 @@ function popularPosts( $options = '' ) {
     }
 
 	if ( $ns_options['credit'] !== 'false' ) {
-		$popular .= "<li style='opacity:0.4;filter:alpha(opacity=40);'><a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/?source=" . urlencode(get_bloginfo('url')) . "' style='opacity:0.4;filter:alpha(opacity=40);' target='_blank'>Easy Popular Posts by Christopher Ross</a></li>";
+		$popular .= "<li><a href='http://thisismyurl.com/?source=" . urlencode(get_bloginfo('url')) . "' target='_blank'>WordPress Consulting</a></li>";
 	}
 
 	if ( $ns_options['show'] !== 'false') {
