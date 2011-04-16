@@ -330,7 +330,7 @@ function popularPosts( $options = '' ) {
     }
 
 	if ( $ns_options['credit'] !== 'false' ) {
-		$popular .= "<li><a href='http://thisismyurl.com/?source=" . urlencode(get_bloginfo('url')) . "' target='_blank'>WordPress Consulting</a></li>";
+		$popular .= "<li><a href='http://thisismyurl.com/'>WordPress Consulting</a></li>";
 	}
 
 	if ( $ns_options['show'] !== 'false') {
