@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add popular posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 1.7.2
+Version: 1.7.3
 */
 
 /*
@@ -278,6 +278,9 @@ function cr_easy_popular_posts_get_options($options = '' ) {
 		"credit"   => true,
 		"show"     => true
 	);
+	
+	
+
 
 	$options = explode( "&", $options );
 	foreach ( $options as $option ) {
@@ -328,8 +331,8 @@ function popularPosts( $options = '' ) {
 		}
 		$popular .= '>' . $title . '</a>' . $ns_options['after'];
     }
-
-	if ( $ns_options['credit'] !== 'false' ) {
+	
+	if ( $ns_options['credit'] == 'true' ) {
 		$popular .= "<li><a href='http://thisismyurl.com/'>WordPress Consulting</a></li>";
 	}
 
