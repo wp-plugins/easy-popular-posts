@@ -4,8 +4,8 @@ Plugin URI: http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-post
 Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
 Donate link:  http://thisismyurl.com/
 Requires at least: 2.8.0
-Tested up to: 3.1.2
-Stable tag: 1.7.3
+Tested up to: 3.2
+Stable tag: 2.0.0
 
 
 An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
@@ -14,7 +14,7 @@ An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/w
 
 An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
 
-You can also include the the list in a post using a shortcode [popularPosts] or as a widget.
+You can also include the the list in a post using a shortcode [thisismyurl_easy_popular_posts] or as a widget.
 
 == Installation ==
 
@@ -32,11 +32,11 @@ Updates to the plugin will be posted here, to [Christopher Ross]
 
 = How do I display the results in my PHP code? =
 
-&lt;?php popularPosts(); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts(); ?&gt;
 
 = How do I display the results in my posts? =
 
-Include the shortcode [popularPosts] in any post or page.
+Include the shortcode [thisismyurl_easy_popular_posts] in any post or page.
 
 = How do I include the results as a widget? =
 
@@ -45,35 +45,35 @@ On your Widgets page, simply drag and drop the widget to your sidebar!
 =General results=
 Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.
 
-&lt;?php popularPosts(); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts(); ?&gt;
 
 =Specific number of results=
 If you would like to return a specific number of results as your maximum:
 
-&lt;?php popularPosts('count=10'); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts('count=10'); ?&gt;
 
 =Altering the before and after values=<
 By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can specify how to format the results using the following code:
 
-&lt;?php popularPosts('before=&lt;p&gt;&amp;after=&lt;/p&gt;'); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts('before=&lt;p&gt;&amp;after=&lt;/p&gt;'); ?&gt;
 
 
 =The Order=<
 You can now change the order of the results using ASC, DESC or RAND to return the results in ascending, descending or random order.
 
-&lt;?php popularPosts('order=ASC'); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts('order=ASC'); ?&gt;
 
 
 =Echo vs. Return=
 Finally, if you'd like to copy the results into a variable you can return the results as follows:
 
-&lt;?php popularPosts('show=false'); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts('show=false'); ?&gt;
 
 =Combining Arguements=
 
 If you'd like to call multiple arguments you can do so by separating them with a & symbol:
 
-&lt;?php popularPosts('show=false&order=ASC'); ?&gt;
+&lt;?php thisismyurl_easy_popular_posts('show=false&order=ASC'); ?&gt;
 
 
 == Donations ==
@@ -82,6 +82,14 @@ If you would like to donate to help support future development of this tool, ple
 
 
 == Change Log ==
+
+= 2.0 =
+
+* Tested up to WordPress 3.2
+* Added controls to Widget
+* Renamed functions for compatibility
+* Reduced font size on credit link
+
 
 = 1.7.3 =
 
