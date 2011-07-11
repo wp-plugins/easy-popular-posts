@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.0.0
+Version: 2.0.1
 */
 
 
@@ -34,10 +34,9 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 		"count"    => "10",
 		"comments" => "0",
 		"before"   => "<li>",
-		"after"    => "</li>",
+		"after"    => "</li>\n",
 		"order"    => "desc",
 		"nofollow" => false,
-		"credit"   => false,
 		"show"     => true
 	);
 
@@ -70,10 +69,6 @@ function thisismyurl_easy_popular_posts($options = '' ) {
     foreach ( $posts as $post ) {
 		$popular .=  $ns_options['before']."<a href='".get_permalink($post->ID)."'>".get_the_title($post->ID)."</a>".$ns_options['after'];
     }
-
-	if ( $ns_options['credit'] == "true" ) {
-		$popular .= "<li style='font-size: .5em;'><a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Popular Post Plugin by Christopher Ross</a></li>";
-	}
 	
 	if ( $ns_options['show'] ) {
 		echo $popular;
@@ -98,19 +93,17 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		$instance['count'] = strip_tags(stripslashes($new_instance['count']));
 		$instance['order'] = strip_tags(stripslashes($new_instance['order']));
 		$instance['link'] = strip_tags(stripslashes($new_instance['link']));
-		$instance['credit'] = strip_tags(stripslashes($new_instance['credit']));
 
 		return $instance;
 	}
 
 	function form($instance){
-		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false', 'credit'=>'false') );
+		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false') );
 
 		$title = htmlspecialchars($instance['title']);
 		$count = htmlspecialchars($instance['count']);
 		$order = htmlspecialchars($instance['order']);
 		$link = htmlspecialchars($instance['link']);
-		$credit = htmlspecialchars($instance['credit']);
 
 		for ($i = 5; $i <= 25; $i=$i+5) {
 			$countoption .= "<option value='$i' ";
@@ -125,8 +118,6 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		if ($link == "true") {$linkoption .= "<option value='true' selected >Yes</option>";} else {$linkoption .= "<option value='true'>Yes</option>";}
 		if ($link == "false") {$linkoption .= "<option value='false' selected >No</option>";} else {$linkoption .= "<option value='false'>No</option>";}
 
-		if ($credit == "true") {$creditoption .= "<option value='true' selected >Yes</option>";} else {$creditoption .= "<option value='true'>Yes</option>";}
-		if ($credit == "false") {$creditoption .= "<option value='false' selected >No</option>";} else {$creditoption .= "<option value='false'>No</option>";}
 
 
 		# Output the options
@@ -145,21 +136,19 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 				<select id="' . $this->get_field_id('link') . '" name="' . $this->get_field_name('link') . '">'.$linkoption.'</select>
 				</p>';
 				
-		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('credit') . '">' . __('Include Credit?') . '</label><br />
-				<select id="' . $this->get_field_id('credit') . '" name="' . $this->get_field_name('credit') . '">'.$creditoption.'</select>
-				</p>';		
+	
 	}
 
 
 	/*  Displays the Widget */
 	function widget($args, $instance){
 		extract( $args );
-		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false', 'credit' => 'false') );
+		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false') );
 
 		# Before the widget
 		echo $before_widget;
 		echo '<h4 class="widgettitle">'.$instance['title'].'</h4>';
-		echo '<ul>'.thisismyurl_easy_popular_posts('credit='.$instance['credit'].'&link='.$instance['link'].'&count='.$instance['count'].'&order='.$instance['order']).'</ul>';
+		echo '<ul>'.thisismyurl_easy_popular_posts('show=0&link='.$instance['link'].'&count='.$instance['count'].'&order='.$instance['order']).'</ul>';
 		echo $after_widget;
 
 	}
