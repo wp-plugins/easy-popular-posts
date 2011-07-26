@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.1.0
+Version: 2.5.0
 */
 
 
@@ -38,7 +38,9 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 		"order"    => "desc",
 		"nofollow" => false,
 		"excerpt" => false,
+		"creditlink" => false,
 		"featureimage" => false,
+		"displaytype" => "comment",
 		"show"     => true
 	);
 
@@ -49,26 +51,44 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 	}
 
 
-	if ( strtolower( $ns_options['order'] ) == "desc" ) {
-		$sqlorder = "ORDER BY comment_count DESC";
-	}
-	if ( strtolower( $ns_options['order'] ) == "asc" ) {
-		$sqlorder = "ORDER BY comment_count ASC";
-	}
-	if ( strtolower($ns_options['order'] ) == "rand" ) {
-		$sqlorder = "ORDER BY RAND()";
-	}
+	
 
-	global $wpdb;
-	$popular_posts = $wpdb->get_results("
-		SELECT ID
-		FROM " . $wpdb->posts . "
-		WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $ns_options['comments']."
-		" . $sqlorder . " LIMIT 0 , " . $ns_options['count']
-	);
 	
+	if ($ns_options['displaytype'] == 'comment') {
+		if ( strtolower( $ns_options['order'] ) == "desc" ) {
+		$sqlorder = "ORDER BY comment_count DESC";
+		}
+		if ( strtolower( $ns_options['order'] ) == "asc" ) {
+			$sqlorder = "ORDER BY comment_count ASC";
+		}
+		if ( strtolower($ns_options['order'] ) == "rand" ) {
+			$sqlorder = "ORDER BY RAND()";
+		}
+		global $wpdb;
+		$popular_posts = $wpdb->get_results("
+			SELECT ID
+			FROM " . $wpdb->posts . "
+			WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $ns_options['comments']."
+			" . $sqlorder . " LIMIT 0 , " . $ns_options['count']
+		);
+	} else if ($ns_options['displaytype'] == 'total') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_total")));
+	} else if ($ns_options['displaytype'] == 'monthly') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_month_".date('Y_m'))));
+	} else if ($ns_options['displaytype'] == 'weekly') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_week_".date('Y_W'))));
+	} else if ($ns_options['displaytype'] == 'daily') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_day_".date('Y_z'))));
+	}
 	
-    foreach ( $popular_posts as $post ) {
+	arsort($posts);
+	
+	foreach ($posts as $key=>$value) {
+		
+		if (count($popular_posts) <= $ns_options['count'] && $value > 0) {
+			$popular_posts[]->ID = $key;
+		}
+	}
+	
+
+
+	foreach ( $popular_posts as $post ) {
 		$popular .=  $ns_options['before'];
 		
 		$thepost = get_post( $post->ID );
@@ -86,7 +106,9 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 		if ($ns_options['excerpt'] == 'true') {$popular .=  "<div class='excerpt'>".$thepost->post_excerpt."</div>";}
 		$popular .=  $ns_options['after'];
     }
-	
+	if ($ns_options['creditlink'] == 'true' && is_home()) {
+		$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];	
+	}
 	if ( $ns_options['show'] ) {
 		echo $popular;
 	} else {
@@ -112,12 +134,14 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		$instance['link'] = strip_tags(stripslashes($new_instance['link']));
 		$instance['excerpt'] = strip_tags(stripslashes($new_instance['excerpt']));
 		$instance['feature'] = strip_tags(stripslashes($new_instance['feature']));
+		$instance['creditlink'] = strip_tags(stripslashes($new_instance['creditlink']));
+		$instance['displaytype'] = strip_tags(stripslashes($new_instance['displaytype']));
 
 		return $instance;
 	}
 
 	function form($instance){
-		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false', 'excerpt'=>'false', 'featureimage'=>'false') );
+		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false', 'excerpt'=>'false', 'featureimage'=>'false','displaytype'=>'comment','creditlink'=>'false') );
 
 		$title = htmlspecialchars($instance['title']);
 		$count = htmlspecialchars($instance['count']);
@@ -125,13 +149,21 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		$link = htmlspecialchars($instance['link']);
 		$excerpt = htmlspecialchars($instance['excerpt']);
 		$feature = htmlspecialchars($instance['feature']);
+		$creditlink = htmlspecialchars($instance['creditlink']);
+		$displaytype = htmlspecialchars($instance['displaytype']);
 
 		for ($i = 5; $i <= 25; $i=$i+5) {
 			$countoption .= "<option value='$i' ";
 			if ($count == $i) {$countoption .= "selected";}
 			$countoption .= ">$i</option>";
 		}
-	
+		
+		if ($displaytype == "comment") {$displaytypeoption .= "<option value='comment' selected >Comment</option>";} else {$displaytypeoption .= "<option value='comment'>Comment</option>";}
+		if ($displaytype == "total") {$displaytypeoption .= "<option value='total' selected >Total</option>";} else {$displaytypeoption .= "<option value='total'>Total</option>";}
+		if ($displaytype == "monthly") {$displaytypeoption .= "<option value='monthly' selected >Monthly</option>";} else {$displaytypeoption .= "<option value='monthly'>Monthly</option>";}
+		if ($displaytype == "weekly") {$displaytypeoption .= "<option value='weekly' selected >Weekly</option>";} else {$displaytypeoption .= "<option value='weekly'>Weekly</option>";}
+		if ($displaytype == "daily") {$displaytypeoption .= "<option value='daily' selected >Daily</option>";} else {$displaytypeoption .= "<option value='daily'>Daily</option>";}
+
 		if ($order == "desc") {$orderoption .= "<option value='desc' selected >Descending</option>";} else {$orderoption .= "<option value='desc'>Descending</option>";}
 		if ($order == "asc") {$orderoption .= "<option value='asc' selected >Ascending</option>";} else {$orderoption .= "<option value='asc'>Ascending</option>";}
 
@@ -145,15 +177,22 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		if ($featureimage == "true") {$featureimageoption .= "<option value='true' selected >Yes</option>";} else {$featureimageoption .= "<option value='true'>Yes</option>";}
 		if ($featureimage == "false") {$featureimageoption .= "<option value='false' selected >No</option>";} else {$featureimageoption .= "<option value='false'>No</option>";}
 
-	
+		if ($creditlink == "true") {$creditlinkoption .= "<option value='true' selected >Yes</option>";} else {$creditlinkoption .= "<option value='true'>Yes</option>";}
+		if ($creditlink == "false") {$creditlinkoption .= "<option value='false' selected >No</option>";} else {$creditlinkoption .= "<option value='false'>No</option>";}
 
 		# Output the options
+				
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('title') . '">' . __('Title:') . '</label><br />
 				<input style="width: 300px;" id="' . $this->get_field_id('title') . '" name="' . $this->get_field_name('title') . '" type="text" value="' . $title . '" />
 				</p>';
+
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('count') . '">' . __('Count:') . '</label><br />
 				<select id="' . $this->get_field_id('count') . '" name="' . $this->get_field_name('count') . '">'.$countoption.'</select>
-				</p>';	
+				</p>';
+		
+		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('displaytype') . '">' . __('Display Type:') . '</label><br />
+				<select id="' . $this->get_field_id('displaytype') . '" name="' . $this->get_field_name('displaytype') . '">'.$displaytypeoption.'</select>
+				</p>';
 		
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('order') . '">' . __('Order:') . '</label><br />
 				<select id="' . $this->get_field_id('order') . '" name="' . $this->get_field_name('order') . '">'.$orderoption.'</select>
@@ -167,19 +206,22 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 				<select id="' . $this->get_field_id('excerpt') . '" name="' . $this->get_field_name('excerpt') . '">'.$excerptoption.'</select>
 				</p>';
 				
-
+		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('creditlink') . '">' . __('Include Credit Link?') . '</label><br />
+				<select id="' . $this->get_field_id('creditlink') . '" name="' . $this->get_field_name('creditlink') . '">'.$creditlinkoption.'</select>
+				</p>';
+	
 	}
 
 
 	/*  Displays the Widget */
 	function widget($args, $instance){
 		extract( $args );
-		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false', 'excerpt'=>'false', 'featureimage'=>'false') );
+		$instance = wp_parse_args( (array) $instance, array('title'=>'Popular Posts', 'count'=>'5', 'order'=>'desc', 'link'=>'false', 'excerpt'=>'false', 'featureimage'=>'false','displaytype'=>'comment','creditlink'=>'false') );
 
 		# Before the widget
 		echo $before_widget;
 		echo '<h3 class="widgettitle">'.$instance['title'].'</h3>';
-		echo '<ul>'.thisismyurl_easy_popular_posts('show=0&link='.$instance['link'].'&count='.$instance['count'].'&order='.$instance['order'].'&excerpt='.$instance['excerpt'].'&featureimage='.$instance['featureimage']).'</ul>';
+		echo '<ul>'.thisismyurl_easy_popular_posts('show=0&link='.$instance['link'].'&count='.$instance['count'].'&order='.$instance['order'].'&excerpt='.$instance['excerpt'].'&displaytype='.$instance['displaytype'].'&featureimage='.$instance['featureimage'].'&creditlink='.$instance['creditlink']).'</ul>';
 		echo $after_widget;
 
 	}
@@ -190,4 +232,52 @@ function thisismyurl_popular_posts_widget_Init() {
 	register_widget('thisismyurl_popular_posts_widget');
 }
 add_action('widgets_init', 'thisismyurl_popular_posts_widget_Init');
+
+function thisismyurl_popular_posts_count($content) {
+	if (is_single()) {
+		
+		global $post;
+		$id = $post->ID;
+		
+		$total_counts = 	thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_total")));
+		$monthly_counts = 	thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_month_".date('Y_m'))));
+		$weekly_counts = 	thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_week_".date('Y_W'))));
+		$daily_counts = 	thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_day_".date('Y_z'))));
+		
+		
+		$total_counts[$id]++;
+		$monthly_counts[$id]++;
+		$weekly_counts[$id]++;
+		$daily_counts[$id]++;
+		
+		update_option("thisismyurl_popular_posts_total",json_encode($total_counts));
+		update_option("thisismyurl_popular_posts_month_".date('Y_m'),json_encode($monthly_counts));
+		update_option("thisismyurl_popular_posts_week_".date('Y_W'),json_encode($weekly_counts));
+		update_option("thisismyurl_popular_posts_day_".date('Y_z'),json_encode($daily_counts));
+	
+	}
+	return $content;
+}
+add_action('the_content', 'thisismyurl_popular_posts_count');
+
+function thisismyurl_popular_posts_objectToArray($d) {
+	if (is_object($d)) {
+		// Gets the properties of the given object
+		// with get_object_vars function
+		$d = get_object_vars($d);
+	}
+
+	if (is_array($d)) {
+		/*
+		* Return array converted to object
+		* Using __FUNCTION__ (Magic constant)
+		* for recursive call
+		*/
+		return array_map(__FUNCTION__, $d);
+	}
+	else {
+		// Return array
+		return $d;
+	}
+}
 ?>
