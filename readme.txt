@@ -5,7 +5,7 @@ Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, m
 Donate link:  http://thisismyurl.com/
 Requires at least: 3.0.0
 Tested up to: 3.2
-Stable tag: 2.5
+Stable tag: 2.5.1
 
 An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
 

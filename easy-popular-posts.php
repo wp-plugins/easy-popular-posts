@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.5.0
+Version: 2.5.1
 */
 
 
@@ -77,43 +77,44 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 	} else if ($ns_options['displaytype'] == 'daily') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_day_".date('Y_z'))));
 	}
 	
-	arsort($posts);
+	if (count($posts)>0) {
+		arsort($posts);
+		
+		foreach ($posts as $key=>$value) {
+			
+			if (count($popular_posts) <= $ns_options['count'] && $value > 0) {
+				$popular_posts[]->ID = $key;
+			}
+		}
 	
-	foreach ($posts as $key=>$value) {
-		
-		if (count($popular_posts) <= $ns_options['count'] && $value > 0) {
-			$popular_posts[]->ID = $key;
+		foreach ( $popular_posts as $post ) {
+			$popular .=  $ns_options['before'];
+			
+			$thepost = get_post( $post->ID );
+			
+			if ($ns_options['link'] == 'true') {
+				$popular .= "<a href='".get_permalink($thepost->ID)."' ";
+				if ($ns_options['nofollow'] == 'true') {$popular .= 'nofollow';}
+				$popular .= ">";
+			}
+			$popular .=  "<span class='title'>".get_the_title($thepost->ID)."</title>";
+			if ($ns_options['link'] == 'true') {$popular .= "</a>";}
+			if ($ns_options['featureimage'] == 'true') {
+				if (has_post_thumbnail($thepost->ID)) {$popular .=  "<div class='thumbnail'>".get_the_post_thumbnail($thepost->ID,'thumbnail')."</div>";}
+			}
+			if ($ns_options['excerpt'] == 'true') {$popular .=  "<div class='excerpt'>".$thepost->post_excerpt."</div>";}
+			$popular .=  $ns_options['after'];
+		}
+		if ($ns_options['creditlink'] == 'true' && is_home()) {
+			$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];	
+		}
+		if ( $ns_options['show'] ) {
+			echo $popular;
+		} else {
+			return $popular;
 		}
 	}
-	
 
-
-	foreach ( $popular_posts as $post ) {
-		$popular .=  $ns_options['before'];
-		
-		$thepost = get_post( $post->ID );
-		
-		if ($ns_options['link'] == 'true') {
-			$popular .= "<a href='".get_permalink($thepost->ID)."' ";
-			if ($ns_options['nofollow'] == 'true') {$popular .= 'nofollow';}
-			$popular .= ">";
-		}
-		$popular .=  "<span class='title'>".get_the_title($thepost->ID)."</title>";
-		if ($ns_options['link'] == 'true') {$popular .= "</a>";}
-		if ($ns_options['featureimage'] == 'true') {
-			if (has_post_thumbnail($thepost->ID)) {$popular .=  "<div class='thumbnail'>".get_the_post_thumbnail($thepost->ID,'thumbnail')."</div>";}
-		}
-		if ($ns_options['excerpt'] == 'true') {$popular .=  "<div class='excerpt'>".$thepost->post_excerpt."</div>";}
-		$popular .=  $ns_options['after'];
-    }
-	if ($ns_options['creditlink'] == 'true' && is_home()) {
-		$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];	
-	}
-	if ( $ns_options['show'] ) {
-		echo $popular;
-	} else {
-		return $popular;
-	}
 }
 
 class thisismyurl_popular_posts_widget extends WP_Widget
