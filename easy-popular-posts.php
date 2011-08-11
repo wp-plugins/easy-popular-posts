@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.5.1
+Version: 2.5.3
 */
 
 
@@ -43,18 +43,18 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 		"displaytype" => "comment",
 		"show"     => true
 	);
+	
+	
 
 	$options = explode( "&", $options );
 	foreach ( $options as $option ) {
 		$parts = explode( "=", $option );
 		$ns_options[$parts[0]] = $parts[1];
 	}
-
-
 	
 
-	
 	if ($ns_options['displaytype'] == 'comment') {
+		
 		if ( strtolower( $ns_options['order'] ) == "desc" ) {
 		$sqlorder = "ORDER BY comment_count DESC";
 		}
@@ -71,22 +71,26 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 			WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $ns_options['comments']."
 			" . $sqlorder . " LIMIT 0 , " . $ns_options['count']
 		);
-	} else if ($ns_options['displaytype'] == 'total') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_total")));
-	} else if ($ns_options['displaytype'] == 'monthly') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_month_".date('Y_m'))));
-	} else if ($ns_options['displaytype'] == 'weekly') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_week_".date('Y_W'))));
-	} else if ($ns_options['displaytype'] == 'daily') { $posts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_day_".date('Y_z'))));
+		
+	} else if ($ns_options['displaytype'] == 'total') { $myposts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_total")));
+	} else if ($ns_options['displaytype'] == 'monthly') { $myposts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_month_".date('Y_m'))));
+	} else if ($ns_options['displaytype'] == 'weekly') { $myposts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_week_".date('Y_W'))));
+	} else if ($ns_options['displaytype'] == 'daily') { $myposts = thisismyurl_popular_posts_objectToArray(json_decode(get_option("thisismyurl_popular_posts_day_".date('Y_z'))));
 	}
 	
-	if (count($posts)>0) {
-		arsort($posts);
+		if (count($myposts)>0 || count($popular_posts)>0) {
 		
-		foreach ($posts as $key=>$value) {
+		arsort($myposts);
+		
+		foreach ($myposts as $key=>$value) {
 			
 			if (count($popular_posts) <= $ns_options['count'] && $value > 0) {
 				$popular_posts[]->ID = $key;
 			}
 		}
 	
+	
+
 		foreach ( $popular_posts as $post ) {
 			$popular .=  $ns_options['before'];
 			
@@ -134,7 +138,7 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		$instance['order'] = strip_tags(stripslashes($new_instance['order']));
 		$instance['link'] = strip_tags(stripslashes($new_instance['link']));
 		$instance['excerpt'] = strip_tags(stripslashes($new_instance['excerpt']));
-		$instance['feature'] = strip_tags(stripslashes($new_instance['feature']));
+		$instance['featureimage'] = strip_tags(stripslashes($new_instance['featureimage']));
 		$instance['creditlink'] = strip_tags(stripslashes($new_instance['creditlink']));
 		$instance['displaytype'] = strip_tags(stripslashes($new_instance['displaytype']));
 
@@ -149,7 +153,7 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		$order = htmlspecialchars($instance['order']);
 		$link = htmlspecialchars($instance['link']);
 		$excerpt = htmlspecialchars($instance['excerpt']);
-		$feature = htmlspecialchars($instance['feature']);
+		$featureimage = htmlspecialchars($instance['featureimage']);
 		$creditlink = htmlspecialchars($instance['creditlink']);
 		$displaytype = htmlspecialchars($instance['displaytype']);
 
@@ -201,6 +205,10 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 				
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('link') . '">' . __('Include Link?') . '</label><br />
 				<select id="' . $this->get_field_id('link') . '" name="' . $this->get_field_name('link') . '">'.$linkoption.'</select>
+				</p>';
+
+		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('featureimage') . '">' . __('Include Image?') . '</label><br />
+				<select id="' . $this->get_field_id('featureimage') . '" name="' . $this->get_field_name('featureimage') . '">'.$featureimageoption.'</select>
 				</p>';
 
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name('excerpt') . '">' . __('Include Excerpt?') . '</label><br />
