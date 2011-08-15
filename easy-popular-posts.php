@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.5.3
+Version: 2.5.4
 */
 
 
@@ -80,7 +80,7 @@ function thisismyurl_easy_popular_posts($options = '' ) {
 	
 		if (count($myposts)>0 || count($popular_posts)>0) {
 		
-		arsort($myposts);
+		if (count($myposts)>0) {arsort($myposts);}
 		
 		foreach ($myposts as $key=>$value) {
 			
