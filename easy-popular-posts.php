@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.5.5
+Version: 2.5.6
 */
 
 
@@ -104,7 +104,7 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 						if ( $ns_options['nofollow'] == 'true' ) {$popular .= 'nofollow';}
 						$popular .= ">";
 					}
-					$popular .=  "<span class='title'>".get_the_title( $thepost->ID )."</title>";
+					$popular .=  "<span class='title'>".get_the_title( $thepost->ID )."</span>";
 					if ( $ns_options['link'] == 'true' ) {$popular .= "</a>";}
 					if ( $ns_options['featureimage'] == 'true' ) {
 						if ( has_post_thumbnail( $thepost->ID ) ) {$popular .=  "<div class='thumbnail'>".get_the_post_thumbnail( $thepost->ID,'thumbnail' )."</div>";}
