@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.5.6
+Version: 2.6.0
 */
 
 
@@ -30,7 +30,7 @@ Version: 2.5.6
 add_shortcode( 'thisismyurl_easy_popular_posts', 'thisismyurl_easy_popular_posts' );
 
 function thisismyurl_easy_popular_posts( $options = '' ) {
-	$ns_options = array( 
+	$ns_options = array(
 		"count"    => "10",
 		"comments" => "0",
 		"before"   => "<li>",
@@ -43,18 +43,18 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 		"displaytype" => "comment",
 		"show"     => true
 	 );
-	
-	
+
+
 
 	$options = explode( "&", $options );
 	foreach ( $options as $option ) {
 		$parts = explode( "=", $option );
 		$ns_options[$parts[0]] = $parts[1];
 	}
-	
+
 
 	if ( $ns_options['displaytype'] == 'comment' ) {
-		
+
 		if ( strtolower( $ns_options['order'] ) == "desc" ) {
 		$sqlorder = "ORDER BY comment_count DESC";
 		}
@@ -71,34 +71,40 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 			WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $ns_options['comments']."
 			" . $sqlorder . " LIMIT 0 , " . $ns_options['count']
 		 );
-		
+
 	} else if ( $ns_options['displaytype'] == 'total' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_total" ) ) );
 	} else if ( $ns_options['displaytype'] == 'monthly' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_month_".date( 'Y_m' ) ) ) );
 	} else if ( $ns_options['displaytype'] == 'weekly' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_week_".date( 'Y_W' ) ) ) );
 	} else if ( $ns_options['displaytype'] == 'daily' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_day_".date( 'Y_z' ) ) ) );
 	}
-	
+
 		if ( count( $myposts )>0 || count( $popular_posts )>0 ) {
-			
+
 			if ( count( $myposts )>0 ) {
 				arsort( $myposts );
 				if ( $myposts ) {
 
 					foreach ( $myposts as $key=>$value ) {
-				
+
 						if ( count( $popular_posts ) <= $ns_options['count'] && $value > 0 )
 							$popular_posts[]->ID = $key;
-							
+
 					}
 				}
 			}
-		
+
 		if ( count( $popular_posts )>0 ) {
 				foreach ( $popular_posts as $post ) {
+
+					if ( $ns_options['before'] == '<li>' )
+						$before = '<li class="' . get_the_category_list( ' ', '', $post->ID ) . '" >';
+					else
+						$before = $ns_options['before'];
+
 					$popular .=  $ns_options['before'];
-					
+
 					$thepost = get_post( $post->ID );
-					
+
 					if ( $ns_options['link'] == 'true' ) {
 						$popular .= "<a href='".get_permalink( $thepost->ID )."' ";
 						if ( $ns_options['nofollow'] == 'true' ) {$popular .= 'nofollow';}
@@ -113,7 +119,7 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 					$popular .=  $ns_options['after'];
 				}
 				if ( $ns_options['creditlink'] == 'true' && is_home( ) ) {
-					$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];	
+					$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];
 				}
 				if ( $ns_options['show'] ) {
 					echo $popular;
@@ -122,14 +128,14 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 				}
 			}
 		}
-	
+
 
 }
 
 class thisismyurl_popular_posts_widget extends WP_Widget
 {
-	
-	
+
+
 	function thisismyurl_popular_posts_widget( ){
 		$widget_ops = array( 'classname' => 'widget_thisismyurl_popular_posts', 'description' => __( "A WordPress widget to add popular posts to any WordPress theme. Learn more at http://thisismyurl.com" ) );
 		$control_ops = array( 'width' => 300, 'height' => 300 );
@@ -167,7 +173,7 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 			if ( $count == $i ) {$countoption .= "selected";}
 			$countoption .= ">$i</option>";
 		}
-		
+
 		if ( $displaytype == "comment" ) {$displaytypeoption .= "<option value='comment' selected >Comment</option>";} else {$displaytypeoption .= "<option value='comment'>Comment</option>";}
 		if ( $displaytype == "total" ) {$displaytypeoption .= "<option value='total' selected >Total</option>";} else {$displaytypeoption .= "<option value='total'>Total</option>";}
 		if ( $displaytype == "monthly" ) {$displaytypeoption .= "<option value='monthly' selected >Monthly</option>";} else {$displaytypeoption .= "<option value='monthly'>Monthly</option>";}
@@ -191,7 +197,7 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		if ( $creditlink == "false" ) {$creditlinkoption .= "<option value='false' selected >No</option>";} else {$creditlinkoption .= "<option value='false'>No</option>";}
 
 		# Output the options
-				
+
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'title' ) . '">' . __( 'Title:' ) . '</label><br />
 				<input style="width: 300px;" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . $title . '" />
 				</p>';
@@ -199,15 +205,15 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'count' ) . '">' . __( 'Count:' ) . '</label><br />
 				<select id="' . $this->get_field_id( 'count' ) . '" name="' . $this->get_field_name( 'count' ) . '">'.$countoption.'</select>
 				</p>';
-		
+
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'displaytype' ) . '">' . __( 'Display Type:' ) . '</label><br />
 				<select id="' . $this->get_field_id( 'displaytype' ) . '" name="' . $this->get_field_name( 'displaytype' ) . '">'.$displaytypeoption.'</select>
 				</p>';
-		
+
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'order' ) . '">' . __( 'Order:' ) . '</label><br />
 				<select id="' . $this->get_field_id( 'order' ) . '" name="' . $this->get_field_name( 'order' ) . '">'.$orderoption.'</select>
 				</p>';
-				
+
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'link' ) . '">' . __( 'Include Link?' ) . '</label><br />
 				<select id="' . $this->get_field_id( 'link' ) . '" name="' . $this->get_field_name( 'link' ) . '">'.$linkoption.'</select>
 				</p>';
@@ -219,11 +225,11 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'excerpt' ) . '">' . __( 'Include Excerpt?' ) . '</label><br />
 				<select id="' . $this->get_field_id( 'excerpt' ) . '" name="' . $this->get_field_name( 'excerpt' ) . '">'.$excerptoption.'</select>
 				</p>';
-				
+
 		echo '	<p style="text-align:left;"><label for="' . $this->get_field_name( 'creditlink' ) . '">' . __( 'Include Credit Link?' ) . '</label><br />
 				<select id="' . $this->get_field_id( 'creditlink' ) . '" name="' . $this->get_field_name( 'creditlink' ) . '">'.$creditlinkoption.'</select>
 				</p>';
-	
+
 	}
 
 
@@ -249,26 +255,26 @@ add_action( 'widgets_init', 'thisismyurl_popular_posts_widget_Init' );
 
 function thisismyurl_popular_posts_count( $content ) {
 	if ( is_single( ) ) {
-		
+
 		global $post;
 		$id = $post->ID;
-		
+
 		$total_counts = 	thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_total" ) ) );
 		$monthly_counts = 	thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_month_".date( 'Y_m' ) ) ) );
 		$weekly_counts = 	thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_week_".date( 'Y_W' ) ) ) );
 		$daily_counts = 	thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_day_".date( 'Y_z' ) ) ) );
-		
-		
+
+
 		$total_counts[$id]++;
 		$monthly_counts[$id]++;
 		$weekly_counts[$id]++;
 		$daily_counts[$id]++;
-		
+
 		update_option( "thisismyurl_popular_posts_total",json_encode( $total_counts ) );
 		update_option( "thisismyurl_popular_posts_month_".date( 'Y_m' ),json_encode( $monthly_counts ) );
 		update_option( "thisismyurl_popular_posts_week_".date( 'Y_W' ),json_encode( $weekly_counts ) );
 		update_option( "thisismyurl_popular_posts_day_".date( 'Y_z' ),json_encode( $daily_counts ) );
-	
+
 	}
 	return $content;
 }

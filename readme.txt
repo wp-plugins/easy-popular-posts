@@ -4,8 +4,8 @@ Plugin URI: http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-post
 Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
 Donate link:  http://thisismyurl.com/
 Requires at least: 3.0.0
-Tested up to: 3.2
-Stable tag: 2.5.6
+Tested up to: 3.4
+Stable tag: 2.6.0
 
 An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
 
@@ -82,6 +82,10 @@ If you would like to donate to help support future development of this tool, ple
 
 == Change Log ==
 
+= 2.6.0 =
+
+* added the category to the <li> tag class
+
 = 2.5.6 =
 
 * fixed incorrectly closed <span> tag
@@ -121,13 +125,13 @@ If you would like to donate to help support future development of this tool, ple
 = 1.7.3 =
 
 * fixed credit link from Widget
- 
+
 
 = 1.7.2 =
 
 * Fixed localhost reference
 * Removed opacity attribute
- 
+
 = 1.7.1 =
 
 * Fixed show=false and credit=false
