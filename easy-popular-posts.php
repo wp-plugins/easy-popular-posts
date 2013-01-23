@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com
-Version: 2.6.0
+Version: 2.6.1
 */
 
 
@@ -40,6 +40,7 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 		"excerpt" => false,
 		"creditlink" => false,
 		"featureimage" => false,
+		"link" => true,
 		"displaytype" => "comment",
 		"show"     => true
 	 );
@@ -96,26 +97,36 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 		if ( count( $popular_posts )>0 ) {
 				foreach ( $popular_posts as $post ) {
 
-					if ( $ns_options['before'] == '<li>' )
-						$before = '<li class="' . get_the_category_list( ' ', '', $post->ID ) . '" >';
+
+
+					if ( $ns_options['before'] == '<li>' ) {
+
+						$post_categories = wp_get_post_categories( $the_post->ID );
+						unset( $category_slugs );
+
+						foreach( $post_categories as $category ){
+							$category_details = get_category( $category );
+							$category_slugs .= ' category-' . $category_details->slug;
+						}
+
+						$popular .= "\n" . '<li class="' . trim( $category_slugs ) . '">';
+					}
 					else
-						$before = $ns_options['before'];
+						$popular .= $ns_options['before'];
 
-					$popular .=  $ns_options['before'];
-
-					$thepost = get_post( $post->ID );
+					$the_post = get_post( $post->ID );
 
 					if ( $ns_options['link'] == 'true' ) {
-						$popular .= "<a href='".get_permalink( $thepost->ID )."' ";
+						$popular .= "<a href='".get_permalink( $the_post->ID )."' ";
 						if ( $ns_options['nofollow'] == 'true' ) {$popular .= 'nofollow';}
 						$popular .= ">";
 					}
-					$popular .=  "<span class='title'>".get_the_title( $thepost->ID )."</span>";
+					$popular .=  "<span class='title'>".get_the_title( $the_post->ID )."</span>";
 					if ( $ns_options['link'] == 'true' ) {$popular .= "</a>";}
 					if ( $ns_options['featureimage'] == 'true' ) {
-						if ( has_post_thumbnail( $thepost->ID ) ) {$popular .=  "<div class='thumbnail'>".get_the_post_thumbnail( $thepost->ID,'thumbnail' )."</div>";}
+						if ( has_post_thumbnail( $the_post->ID ) ) {$popular .=  "<div class='thumbnail'>".get_the_post_thumbnail( $the_post->ID,'thumbnail' )."</div>";}
 					}
-					if ( $ns_options['excerpt'] == 'true' ) {$popular .=  "<div class='excerpt'>".$thepost->post_excerpt."</div>";}
+					if ( $ns_options['excerpt'] == 'true' ) {$popular .=  "<div class='excerpt'>".$the_post->post_excerpt."</div>";}
 					$popular .=  $ns_options['after'];
 				}
 				if ( $ns_options['creditlink'] == 'true' && is_home( ) ) {
@@ -300,4 +311,3 @@ function thisismyurl_popular_posts_objectToArray( $d ) {
 		return $d;
 	}
 }
-?>
