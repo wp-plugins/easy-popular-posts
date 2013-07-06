@@ -1,31 +1,28 @@
 <?php
 /*
 Plugin Name: Easy Popular Posts
-Plugin URI: http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/
+Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts/
 Description: An easy to use WordPress function to add Popular Posts to any theme.
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
-Author URI: http://thisismyurl.com
+Author URI: http://thisismyurl.com/
 Version: 2.6.1
 */
 
 
-/*  Copyright 2011  Christopher Ross  ( email : info@thisismyurl.com )
-
-    This program is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    ( at your option ) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-*/
+/**
+ * Easy Popular Posts core file
+ *
+ * This file contains all the logic required for the plugin
+ *
+ * @link		http://wordpress.org/extend/plugins/easy-popular-posts/
+ *
+ * @package 		Easy Popular Posts
+ * @copyright		Copyright (c) 2008, Chrsitopher Ross
+ * @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License, v2 (or newer)
+ *
+ * @since 		Easy Popular Posts 1.0
+ */
 
 add_shortcode( 'thisismyurl_easy_popular_posts', 'thisismyurl_easy_popular_posts' );
 
@@ -130,7 +127,7 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 					$popular .=  $ns_options['after'];
 				}
 				if ( $ns_options['creditlink'] == 'true' && is_home( ) ) {
-					$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];
+					$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];
 				}
 				if ( $ns_options['show'] ) {
 					echo $popular;

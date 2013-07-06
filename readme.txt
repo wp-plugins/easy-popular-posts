@@ -1,19 +1,22 @@
 === Plugin Name ===
 Contributors: christopherross
-Plugin URI: http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/
+Plugin URI: http://thisismyurl.com/plugins/easy-popular-posts/
 Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
 Donate link:  http://thisismyurl.com/
 Requires at least: 3.0.0
-Tested up to: 3.4
+Tested up to: 3.5.1
 Stable tag: 2.6.2
 
-An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
+An easy to use WordPress function to <a href='http://thisismyurl.com/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
 
 == Description ==
 
-An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/wordpress/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
+An easy to use WordPress function to <a href='http://thisismyurl.com/plugins/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
 
 You can also include the the list in a post using a shortcode [thisismyurl_easy_popular_posts] or as a widget.
+
+This plugin is maintained by Christopher Ross, http://thisismyurl.com or you can find him on Twitter at http://twitter.com/thisismyurl/
+
 
 == Installation ==
 
