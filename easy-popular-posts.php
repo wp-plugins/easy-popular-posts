@@ -198,12 +198,19 @@ class thisismyurl_popular_posts_widget extends WP_Widget
 		$featureimage = htmlspecialchars( $instance['featureimage'] );
 		$creditlink = htmlspecialchars( $instance['creditlink'] );
 		$displaytype = htmlspecialchars( $instance['displaytype'] );
-
+		$countoption ='';
 		for ( $i = 5; $i <= 25; $i=$i+5 ) {
 			$countoption .= "<option value='$i' ";
 			if ( $count == $i ) {$countoption .= "selected";}
 			$countoption .= ">$i</option>";
 		}
+
+		$displaytypeoption = '';
+		$orderoption = '';
+		$linkoption = '';
+		$excerptoption = '';
+		$featureimageoption = '';
+		$creditlinkoption = '';
 
 		if ( $displaytype == "comment" ) {$displaytypeoption .= "<option value='comment' selected >Comment</option>";} else {$displaytypeoption .= "<option value='comment'>Comment</option>";}
 		if ( $displaytype == "total" ) {$displaytypeoption .= "<option value='total' selected >Total</option>";} else {$displaytypeoption .= "<option value='total'>Total</option>";}
