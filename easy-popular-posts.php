@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
 Author URI: http://thisismyurl.com/
-Version: 2.6.1
+Version: 2.6.5
 */
 
 
@@ -17,17 +17,41 @@ Version: 2.6.1
  *
  * @link		http://wordpress.org/extend/plugins/easy-popular-posts/
  *
- * @package 		Easy Popular Posts
- * @copyright		Copyright (c) 2008, Chrsitopher Ross
+ * @package 	Easy Popular Posts
+ * @copyright	Copyright (c) 2008, Chrsitopher Ross
  * @license		http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License, v2 (or newer)
  *
  * @since 		Easy Popular Posts 1.0
  */
 
-add_shortcode( 'thisismyurl_easy_popular_posts', 'thisismyurl_easy_popular_posts' );
+add_shortcode( 'thisismyurl_easy_popular_posts', 'thisismyurl_easy_popular_posts_shortcode' );
+
+function thisismyurl_easy_popular_posts_shortcode( $options = '' ) {
+	$plugin_defaults = array(
+		"count"    => "10",
+		"comments" => "0",
+		"before"   => "<li>",
+		"after"    => "</li>\n",
+		"order"    => "desc",
+		"nofollow" => false,
+		"excerpt" => false,
+		"creditlink" => false,
+		"featureimage" => false,
+		"link" => true,
+		"displaytype" => "comment",
+		"show"     => 		FALSE
+	 );
+
+
+	$instance = wp_parse_args( (array) $options, $plugin_defaults );
+
+	return thisismyurl_easy_popular_posts( $instance );
+}
+
 
 function thisismyurl_easy_popular_posts( $options = '' ) {
-	$ns_options = array(
+
+	$plugin_defaults = array(
 		"count"    => "10",
 		"comments" => "0",
 		"before"   => "<li>",
@@ -43,48 +67,44 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 	 );
 
 
-
-	$options = explode( "&", $options );
-	foreach ( $options as $option ) {
-		$parts = explode( "=", $option );
-		$ns_options[$parts[0]] = $parts[1];
-	}
+	$options = wp_parse_args( (array) $options, $plugin_defaults );
 
 
-	if ( $ns_options['displaytype'] == 'comment' ) {
 
-		if ( strtolower( $ns_options['order'] ) == "desc" ) {
+	if ( $options['displaytype'] == 'comment' ) {
+
+		if ( strtolower( $options['order'] ) == "desc" ) {
 		$sqlorder = "ORDER BY comment_count DESC";
 		}
-		if ( strtolower( $ns_options['order'] ) == "asc" ) {
+		if ( strtolower( $options['order'] ) == "asc" ) {
 			$sqlorder = "ORDER BY comment_count ASC";
 		}
-		if ( strtolower( $ns_options['order'] ) == "rand" ) {
+		if ( strtolower( $options['order'] ) == "rand" ) {
 			$sqlorder = "ORDER BY RAND( )";
 		}
 		global $wpdb;
 		$popular_posts = $wpdb->get_results( "
 			SELECT ID
 			FROM " . $wpdb->posts . "
-			WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $ns_options['comments']."
-			" . $sqlorder . " LIMIT 0 , " . $ns_options['count']
+			WHERE post_type='post' AND post_status = 'publish' AND comment_count >= " . $options['comments']."
+			" . $sqlorder . " LIMIT 0 , " . $options['count']
 		 );
 
-	} else if ( $ns_options['displaytype'] == 'total' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_total" ) ) );
-	} else if ( $ns_options['displaytype'] == 'monthly' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_month_".date( 'Y_m' ) ) ) );
-	} else if ( $ns_options['displaytype'] == 'weekly' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_week_".date( 'Y_W' ) ) ) );
-	} else if ( $ns_options['displaytype'] == 'daily' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_day_".date( 'Y_z' ) ) ) );
+	} else if ( $options['displaytype'] == 'total' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_total" ) ) );
+	} else if ( $options['displaytype'] == 'monthly' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_month_".date( 'Y_m' ) ) ) );
+	} else if ( $options['displaytype'] == 'weekly' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_week_".date( 'Y_W' ) ) ) );
+	} else if ( $options['displaytype'] == 'daily' ) { $myposts = thisismyurl_popular_posts_objectToArray( json_decode( get_option( "thisismyurl_popular_posts_day_".date( 'Y_z' ) ) ) );
 	}
 
-		if ( count( $myposts )>0 || count( $popular_posts )>0 ) {
+		if ( isset( $myposts ) && count( $myposts )>0 || count( $popular_posts )>0 ) {
 
-			if ( count( $myposts )>0 ) {
+			if ( isset( $myposts ) ) {
 				arsort( $myposts );
 				if ( $myposts ) {
 
 					foreach ( $myposts as $key=>$value ) {
 
-						if ( count( $popular_posts ) <= $ns_options['count'] && $value > 0 )
+						if ( count( $popular_posts ) <= $options['count'] && $value > 0 )
 							$popular_posts[]->ID = $key;
 
 					}
@@ -92,14 +112,17 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 			}
 
 		if ( count( $popular_posts )>0 ) {
+			$popular = '';
+
+
 				foreach ( $popular_posts as $post ) {
 
 
 
-					if ( $ns_options['before'] == '<li>' ) {
+					if ( $options['before'] == '<li>' && isset( $the_post ) ) {
 
 						$post_categories = wp_get_post_categories( $the_post->ID );
-						unset( $category_slugs );
+						$category_slugs = '';
 
 						foreach( $post_categories as $category ){
 							$category_details = get_category( $category );
@@ -109,27 +132,27 @@ function thisismyurl_easy_popular_posts( $options = '' ) {
 						$popular .= "\n" . '<li class="' . trim( $category_slugs ) . '">';
 					}
 					else
-						$popular .= $ns_options['before'];
+						$popular .= $options['before'];
 
 					$the_post = get_post( $post->ID );
 
-					if ( $ns_options['link'] == 'true' ) {
+					if ( $options['link'] == 'true' ) {
 						$popular .= "<a href='".get_permalink( $the_post->ID )."' ";
-						if ( $ns_options['nofollow'] == 'true' ) {$popular .= 'nofollow';}
+						if ( $options['nofollow'] == 'true' ) {$popular .= 'nofollow';}
 						$popular .= ">";
 					}
 					$popular .=  "<span class='title'>".get_the_title( $the_post->ID )."</span>";
-					if ( $ns_options['link'] == 'true' ) {$popular .= "</a>";}
-					if ( $ns_options['featureimage'] == 'true' ) {
+					if ( $options['link'] == 'true' ) {$popular .= "</a>";}
+					if ( $options['featureimage'] == 'true' ) {
 						if ( has_post_thumbnail( $the_post->ID ) ) {$popular .=  "<div class='thumbnail'>".get_the_post_thumbnail( $the_post->ID,'thumbnail' )."</div>";}
 					}
-					if ( $ns_options['excerpt'] == 'true' ) {$popular .=  "<div class='excerpt'>".$the_post->post_excerpt."</div>";}
-					$popular .=  $ns_options['after'];
+					if ( $options['excerpt'] == 'true' ) {$popular .=  "<div class='excerpt'>".$the_post->post_excerpt."</div>";}
+					$popular .=  $options['after'];
 				}
-				if ( $ns_options['creditlink'] == 'true' && is_home( ) ) {
-					$popular .=  $ns_options['before']."<a class='creditlink' href='http://thisismyurl.com/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$ns_options['after'];
+				if ( $options['creditlink'] == 'true' && is_home( ) ) {
+					$popular .=  $options['before']."<a class='creditlink' href='http://thisismyurl.com/plugins/easy-popular-posts/'>Easy Popular Posts WordPress Plugin</a>".$options['after'];
 				}
-				if ( $ns_options['show'] ) {
+				if ( $options['show'] ) {
 					echo $popular;
 				} else {
 					return $popular;
