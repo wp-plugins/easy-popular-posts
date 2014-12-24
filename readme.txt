@@ -1,126 +1,91 @@
 === Easy Popular Posts ===
 Contributors: christopherross,thisismyurl
 Plugin URI: http://thisismyurl.com/downloads/easy-popular-posts/
-Tags: popular posts, best, post-plugins, most-viewed, popular, posts,comments, most popular, sidebar, widget, theme, php, code, plugin, post, posts
-Donate link:  http://thisismyurl.com/
+Tags: wordpress,easy,popular,posts,theme,php,code,sidebar,list posts,  plugin, post, posts
+Donate link: http://thisismyurl.com/downloads/
 Requires at least: 3.2.0
 Tested up to: 4.1.0
-Stable tag: 2.6.5
+Stable tag: 15.01
 
-An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
+An easy to use WordPress function to add popular posts to any theme.
 
 == Description ==
 
-An easy to use WordPress function to <a href='http://thisismyurl.com/downloads/easy-popular-posts/'>add popular posts to any WordPress theme</a>.
+This easy to use WordPress plugin is designed to add a new feature for theme developers. Used on many of my own websites as well as those of my clients, the plugin allows me to quickly add a collection of popular posts to any theme element.
 
-You can also include the the list in a post using a shortcode [thisismyurl_easy_popular_posts] or as a widget.
+The plugin can easily be used by website owners as a WordPress Widget, adding lists of posts to the Sidebar of a WordPress website.
 
-This plugin is maintained by Christopher Ross, http://thisismyurl.com or you can find him on Twitter at http://twitter.com/thisismyurl/
+= About the plugin =
 
+More advanced users can also call the functionality of the plugin from a WordPress shortcode by adding the code `[thisismyurl_easy_popular_posts]` to any Post or Page within WordPress.
+
+Finally, theme authors may also take advantage of the plugin by calling the functionality directly from theme files with the code `thisismyurl_easy_popular_posts();`.
+
+This plugin is maintained by Christopher Ross, http://thisismyurl.com/ or you can find him on Twitter at http://twitter.com/thisismyurl/. 
+
+Questions about this plugin can be posted to the WordPress.org forums at https://wordpress.org/plugins/easy-popular-posts/, or to the Issues tab at the GitHub https://github.com/thisismyurl/easy-popular-posts repository for the plugin. 
+
+This plugin is currently available in:
+
+* English
+* French
+* German
 
 == Installation ==
 
-To install the plugin, please upload the folder to your plugins folder and active the plugin.
+To install the plugin, please upload the plugin folder to your plugins folder and active the plugin.
 
 == Screenshots ==
 
-1. Screenshot of Widget
+
+
+
+1. The Widget Control Panel
 
 == Updates ==
-Updates to the plugin will be posted here, to [Christopher Ross]
-(http://thisismyurl.com)
+
+Updates to this plugin will be posted to the GitHub repository for testing prior to updates on WordPress.org, if you'd like to help make this plugin better please consider taking part in regular code reviews of releases at the GitHub repository.
 
 == Frequently Asked Questions ==
 
-= How do I display the results in my PHP code? =
+= Can I display the Widget? =
 
-&lt;?php thisismyurl_easy_popular_posts(); ?&gt;
+Access your Widget control panel at Appearance > Widgets to add it to your theme.
 
-= How do I display the results in my posts? =
+= Can I display the contents as a shortcode? =
 
-Include the shortcode [thisismyurl_easy_popular_posts] in any post or page.
+Yes, the shortcode can be viewed within a post as: `[thisismyurl_easy_popular_posts]`
 
-= How do I include the results as a widget? =
+= How do I display the results in a theme file? =
 
-On your Widgets page, simply drag and drop the widget to your sidebar!
-
-=General results=
-Without passing any parameters, the plugin will return ten results or fewer depending on how many posts you have.
-
-&lt;?php thisismyurl_easy_popular_posts(); ?&gt;
-
-=Specific number of results=
-If you would like to return a specific number of results as your maximum:
-
-&lt;?php thisismyurl_easy_popular_posts('count=10'); ?&gt;
-
-=Altering the before and after values=<
-By default the plugin wraps your code in list item (&lt;li&gt;) tags but you can specify how to format the results using the following code:
-
-&lt;?php thisismyurl_easy_popular_posts('before=&lt;p&gt;&amp;after=&lt;/p&gt;'); ?&gt;
-
-
-=The Order=<
-You can now change the order of the results using ASC, DESC or RAND to return the results in ascending, descending or random order.
-
-&lt;?php thisismyurl_easy_popular_posts('order=ASC'); ?&gt;
-
-
-=Echo vs. Return=
-Finally, if you'd like to copy the results into a variable you can return the results as follows:
-
-&lt;?php thisismyurl_easy_popular_posts('show=false'); ?&gt;
-
-=Combining Arguements=
-
-If you'd like to call multiple arguments you can do so by separating them with a & symbol:
-
-&lt;?php thisismyurl_easy_popular_posts('show=false&order=ASC'); ?&gt;
-
+`thisismyurl_easy_popular_posts();` will display the results as a PHP function in WordPress theme files.
 
 == Donations ==
-If you would like to donate to help support future development of this tool, please visit [Christopher Ross]
-(http://thisismyurl.com/)
 
+Open source software such as this free WordPress plugin only work through the hard work of community members, volunteering their time or resources to make the software freely available. If you would like to show your support for this software, please consider donating towards the development effort. http://thisismyurl.com/downloads/
+
+If you can't contribute to the plugin in any other way, please consider translating it to your local language.
 
 == Change Log ==
 
-= 2.6.5 =
+= 15.01 =
 
-* long overdue error checking
-* fixed shortcode error
+* Rewrote plugin core
+* Added better error checking
+* Moved to 15.01 plugin structure
+* Made plugin OOP
+* added support for RAND, ASC, DESC sorting
+* Tested for WordPress 4.1
 
-= 2.6.0 =
+= 2.1.4 =
 
-* added the category to the <li> tag class
+* Fixed popular setting
 
-= 2.5.6 =
+= 2.1.2 = 
 
-* fixed incorrectly closed <span> tag
-
-= 2.5.5 =
-
-* fixed display error if no posts
-
-= 2.5.2 =
-
-* fixed image display in widget
-
-= 2.5 =
-
-* Added sort by total
-* Added sort by month
-* Added sort by week
-* Added sort by day
-
-= 2.1.1 =
-
+* Added thumbnail option
+* Added excerpt option
 * Added optional credit link
-
-= 2.1 =
-
-* Added excerpt handling
-* Added thumbnail handling
 
 = 2.0 =
 
@@ -130,45 +95,28 @@ If you would like to donate to help support future development of this tool, ple
 * Reduced font size on credit link
 
 
-= 1.7.3 =
-
-* fixed credit link from Widget
-
-
-= 1.7.2 =
-
-* Fixed localhost reference
-* Removed opacity attribute
-
-= 1.7.1 =
-
-* Fixed show=false and credit=false
-* added language support
-* updated admin tool
-
-
 = 1.7 =
 
-* Rewrote widget from the ground up using WP_Widget class introduced in 2.8.
-* Output may differ from previous versions as tags/classes are no longer hard-coded, but now driven by the theme.
+* Added shortcode
+* Replaced widget code with WP_Widget class
+* Added comments option to filter
+
+
+= 1.6.6 =
+
+* Cleaned up code for 3.0.3
+* Fixed credit line to work reliably
+* Removed RSS feed
 
 
 = 1.6.5 =
 
-* removed RSS feed from thisismyurl.com
-* removed manual link
-* fixed credit link to work reliably for show / no-show options
+* Added new widget controls
 
+= 1.5.5 =
 
-= 1.6.4 =
-
-* Added title option for Widget
-* Added credit option for Widget
-
-
-= 1.5.4 =
-
-* Removed update routines, now using WP.org
+* Updated RSS links
+* Code optimizations
 
 = 1.5.2 =
 
