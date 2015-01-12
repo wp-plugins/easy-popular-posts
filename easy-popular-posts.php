@@ -6,7 +6,7 @@ Description: An easy to use WordPress function to add Popular Posts to any theme
 Author: Christopher Ross
 Author URI: http://thisismyurl.com/
 Tags: future, upcoming posts, upcoming post, upcoming, draft, Post, popular, preview, plugin, post, posts
-Version: 15.01
+Version: 15.01.12
 */
 
 
@@ -16,7 +16,7 @@ Version: 15.01
  *
  * This file contains all the logic required for the plugin
  *
- * @link		http://wordpress.org/extend/plugins/wordpresscom-stats-smiley-remover/
+ * @link		http://wordpress.org/extend/plugins/easy-popular-posts/
  *
  * @package 	Easy Popular Posts
  * @copyright	Copyright (c) 2008, Chrsitopher Ross
@@ -55,8 +55,8 @@ include_once( 'thisismyurl-common.php' );
  * @since      Class available since Release 14.11
  *
  */
-if( ! class_exists( 'thissimyurl_EasyPopularPosts' ) ) {
-class thissimyurl_EasyPopularPosts extends thisismyurl_Common_EPP {
+if( ! class_exists( 'thisismyurl_EasyPopularPosts' ) ) {
+class thisismyurl_EasyPopularPosts extends thisismyurl_Common_EPP {
 	/**
 	  * Standard Constructor
 	  *
@@ -258,10 +258,11 @@ class thissimyurl_EasyPopularPosts extends thisismyurl_Common_EPP {
 			}
 	
 		}
-		
+
 		/* return in the proper format */
 		if ( ! empty( $popular ) ) {
-			if ( $options['show'] == 1 )
+
+			if ( 0 != $options['show'] )
 				echo implode( '', $popular );
 			else
 				return implode( '', $popular );
@@ -313,8 +314,8 @@ class thissimyurl_EasyPopularPosts extends thisismyurl_Common_EPP {
 	  */
 	function widget_init() {
 		
-		include_once( 'widgets/thissimyurl_EasyPopularPosts_Widget.php' );
-		register_widget( 'thissimyurl_EasyPopularPosts_Widget' );
+		include_once( 'widgets/thisismyurl_EasyPopularPosts_Widget.php' );
+		register_widget( 'thisismyurl_EasyPopularPosts_Widget' );
 	
 	}
 
@@ -323,11 +324,11 @@ class thissimyurl_EasyPopularPosts extends thisismyurl_Common_EPP {
 }
 }
 
-global $thissimyurl_EasyPopularPosts;
+global $thisismyurl_EasyPopularPosts;
 
-$thissimyurl_EasyPopularPosts = new thissimyurl_EasyPopularPosts;
+$thisismyurl_EasyPopularPosts = new thisismyurl_EasyPopularPosts;
 
-$thissimyurl_EasyPopularPosts->run();
+$thisismyurl_EasyPopularPosts->run();
 
 
 
@@ -337,16 +338,22 @@ $thissimyurl_EasyPopularPosts->run();
   *
   * @access public
   * @static
-  * @uses $thissimyurl_EasyPopularPosts->easy_popular_posts
+  * @uses $thisismyurl_EasyPopularPosts->easy_popular_posts
   * @since Method available since Release 15.01
   *
-  * @param  array see $thissimyurl_EasyPopularPosts->popular_posts_defaults() for accepted options
+  * @param  array see $thisismyurl_EasyPopularPosts->popular_posts_defaults() for accepted options
   *
   */
 if ( ! function_exists( 'thisismyurl_easy_popular_posts' ) ) {
 function thisismyurl_easy_popular_posts( $options = NULL ) {
 	
-	$thissimyurl_EasyPopularPosts->easy_popular_posts( $options );
+	global $thisismyurl_EasyPopularPosts;
+
+	if ( ! isset( $options ) ) 
+		$options = wp_parse_args( array( 'show'=> 1 ), $thisismyurl_EasyPopularPosts->popular_posts_defaults() );
+
+	
+	$thisismyurl_EasyPopularPosts->easy_popular_posts( $options );
 
 }
 }

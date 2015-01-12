@@ -5,7 +5,7 @@ Tags: wordpress,easy,popular,posts,theme,php,code,sidebar,list posts,  plugin, p
 Donate link: http://thisismyurl.com/downloads/
 Requires at least: 3.2.0
 Tested up to: 4.1.0
-Stable tag: 15.01
+Stable tag: 15.01.12
 
 An easy to use WordPress function to add popular posts to any theme.
 
@@ -67,6 +67,12 @@ Open source software such as this free WordPress plugin only work through the ha
 If you can't contribute to the plugin in any other way, please consider translating it to your local language.
 
 == Change Log ==
+
+= 15.01.12 =
+
+* Fixed an error displaying the plugin as a PHP call
+* Cleaned up inline documentation
+
 
 = 15.01 =
 

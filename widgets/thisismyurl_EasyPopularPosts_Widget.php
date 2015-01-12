@@ -1,6 +1,6 @@
 <?php
 
-class thissimyurl_EasyPopularPosts_Widget extends WP_Widget {
+class thisismyurl_EasyPopularPosts_Widget extends WP_Widget {
 	
 	/**
 	  * Standard Widget Constructor
@@ -10,7 +10,7 @@ class thissimyurl_EasyPopularPosts_Widget extends WP_Widget {
 	  * @since Method available since Release 15.01
 	  *
 	  */
-     function thissimyurl_EasyPopularPosts_Widget() {
+     function thisismyurl_EasyPopularPosts_Widget() {
 		 
 		$widget_ops = array( 
 						'classname' => 'widget_thisismyurl_popular_posts', 
@@ -19,7 +19,7 @@ class thissimyurl_EasyPopularPosts_Widget extends WP_Widget {
 					
 		$control_ops = array( 'width' => 300, 'height' => 300, 'id'=> 'widget_thisismyurl_popular_posts' );
 		
-		$this->WP_Widget( 	'thissimyurl_EasyPopularPosts_Widget', 
+		$this->WP_Widget( 	'thisismyurl_EasyPopularPosts_Widget', 
 							__( 'Easy Popular Posts', THISISMYURL_EPP_NAMESPACE ), 
 							$widget_ops, $control_ops
 						);
@@ -38,7 +38,7 @@ class thissimyurl_EasyPopularPosts_Widget extends WP_Widget {
 	  */
 	function update( $new_instance, $old_instance ) {
 		
-		global $thissimyurl_EasyPopularPosts;
+		global $thisismyurl_EasyPopularPosts;
 		
 		$instance['title'] = $new_instance['title'];
 		$instance['post_count'] = $new_instance['post_count'];
@@ -67,9 +67,9 @@ class thissimyurl_EasyPopularPosts_Widget extends WP_Widget {
 	  */
 	function form( $instance ) {
 		
-        global $thissimyurl_EasyPopularPosts;
+        global $thisismyurl_EasyPopularPosts;
 
-		$instance = wp_parse_args( (array) $instance, $thissimyurl_EasyPopularPosts->popular_posts_defaults() );
+		$instance = wp_parse_args( (array) $instance, $thisismyurl_EasyPopularPosts->popular_posts_defaults() );
 
 		for ( $show_count = 5; $show_count <= 25; $show_count=$show_count+5 ) {
 			
@@ -205,11 +205,11 @@ class thissimyurl_EasyPopularPosts_Widget extends WP_Widget {
 		
         extract( $args );
 		
-        global $thissimyurl_EasyPopularPosts;
+        global $thisismyurl_EasyPopularPosts;
 
-		$instance = wp_parse_args( (array) $instance, $thissimyurl_EasyPopularPosts->popular_posts_defaults() );
+		$instance = wp_parse_args( (array) $instance, $thisismyurl_EasyPopularPosts->popular_posts_defaults() );
         
-		$popular_posts = $thissimyurl_EasyPopularPosts->easy_popular_posts( $instance );
+		$popular_posts = $thisismyurl_EasyPopularPosts->easy_popular_posts( $instance );
 		
 		if ( ! empty ( $popular_posts ) ) {
 			/*  Before the widget */
